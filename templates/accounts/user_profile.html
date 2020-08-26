@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<style type="text/css">
+	.follow-btn{
+		background: white;
+		border: 2px solid var(--red);
+		color: var(--red);
+		padding: 4.5px 16px;
+		border-radius: 8px;
+		transition: 0.3s;
+	}
+	.follow-btn:hover{
+		background: var(--red);
+		color: white;
+		text-decoration: none;
+	}
+	.table thead th, .table td{
+		border: none;
+		padding: 2px;
+		vertical-align: top;
+	}
+	.badge{
+		padding: 4px 18px;
+		font-size: 16px;
+		margin: 2px;
+	}
+	.skills{
+		margin-top: 2rem;
+	}
+	.skills p{
+		margin-bottom: 5px;
+		font-size: 24px;
+	}
+</style>
+<div class="container">
+		<h4 id="profile_picture"><img style="width: 50px;height: 50px;border-radius: 50%;border: 3px solid var(--red);" src="/media/{{profile.profile_picture}}" class="img-fluid"><span class="ml-4">{{ profile.user }}</span></h4>
+		<span class="float-right" style="margin-top: -50px;">
+			{% if sameUser %}
+				<a href="{% url 'edit_profile' profile.user.id %}" class="follow-btn">Edit Profile</a>
+				{% else %}
+					{% if canFollow %}
+					<button class="follow-btn">{{text}}</button>
+					{% else %}
+					<button class="following-btn">{{text}}</button>
+				{% endif %}    	
+			{% endif %}
+		</span>
+		<div class="bio" style="max-width: 400px;">
+		<h6 style="font-size: 24px;margin-top: 1rem">Bio</h6>
+		<span id="bio">
+		{{ profile.bio|linebreaks }}
+		{% if profile.website %}
+		<a style="margin-top: -20px;position: absolute;" href="{{profile.website}}">{{ profile.website }}</a>
+		{% endif %}
+		</span>
+		</div>
+		<div class="skills">
+			<p>Languages</p>
+			{% for l in profile.languages.all %}
+			<span class="badge badge-pill badge-{{l.bg_color}}">{{l}}</span>
+			{% endfor %}
+		</div>
+		<br/>
+		<table class="table text-center">
+			<thead>
+				<th style="width: 33vw;">Questions Asked</th>
+				<th style="width: 33vw;"><span id="followers">Followers</span></th>
+				<th style="width: 33vw;"><span id="following">Following</span></th>
+			</thead>
+			<tr class="col">
+				<td>{{questions.count}}</td>
+				<td id="followers_count">{{profile.followers.count}}</td>
+				<td>{{profile.follows.count}}</td>
+			</tr>
+		</table>
+</div>
+
+<hr style="border: 1px solid var(--red);margin-top: 3px;">
+<div class="container">
+	<h3>{{profile.user}}'s Questions</h3>
+		{% for q in questions %}
+			<div class="card">
+				<div class="card-header">
+					<p class="card-title">{{ q.title }}</p>
+				</div>
+				<div class="card-footer">
+					<a href="/{{ q.user }}/questions/{{ q.url }}/" class="btn-login" style="text-decoration: none;padding: 2px 10px;">Read More</a>
+				</div>
+			</div>
+			<br/>
+		{% empty %}
+			<h4>No Questions Asked</h4>
+		{% endfor %}
+</div>
+<script type="text/javascript">
+	var following = {{following}};
+	var follow_btn = document.getElementsByTagName('BUTTON')[1];
+	var init_text = "{{text}}"
+	var followers = document.querySelector('#followers_count');
+	function checkFollowing(){
+		if(following){
+		var x = document.querySelector('.following-btn');
+		x.onclick = function(){
+		var xhttp = new XMLHttpRequest();
+	  	xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	      	x.classList.add('follow-btn')
+	      	x.classList.remove('following-btn')
+	      	x.innerText = "Follow"
+	      	following = false;
+	      	followers.innerText = parseInt(followers.innerText)-1;
+	      	checkFollowing();
+	    	}
+		};
+		xhttp.open("GET", "/unfollow/{{user}}", true);
+		xhttp.send();
+		}
+		}
+		else{
+			var x = document.querySelector('.follow-btn');
+			x.onclick = function(){
+			var xhttp = new XMLHttpRequest();
+		  	xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		      	x.classList.add('following-btn')
+		      	x.classList.remove('follow-btn')
+		      	x.innerText = "Following"
+		      	following = true;
+		      	followers.innerText = parseInt(followers.innerText)+1;
+		      	checkFollowing();
+		    }
+		};
+		xhttp.open("GET", "/follow/{{user}}", true);
+		xhttp.send();
+		}
+	}	
+	}
+	if(following){
+		var x = document.querySelector('.following-btn');
+		x.onclick = function(){
+		var xhttp = new XMLHttpRequest();
+	  	xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	      	x.classList.add('follow-btn')
+	      	x.classList.remove('following-btn')
+	      	x.innerText = "Follow"
+	      	followers.innerText = parseInt(followers.innerText)-1;
+	      	following = false
+	      	checkFollowing()
+	    	}
+		};
+		xhttp.open("GET", "/unfollow/{{user}}", true);
+		xhttp.send();
+		}
+		}
+		else{
+			var x = document.querySelector('.follow-btn');
+			x.onclick = function(){
+			var xhttp = new XMLHttpRequest();
+		  	xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		      	x.classList.add('following-btn')
+		      	x.classList.remove('follow-btn')
+		      	x.innerText = "Following"
+		      	following = true
+		      	followers.innerText = parseInt(followers.innerText)+1;
+		      	checkFollowing()
+		    }
+		};
+		xhttp.open("GET", "/follow/{{user}}", true);
+		xhttp.send();
+		}
+	}
+</script>
+{% endblock %}

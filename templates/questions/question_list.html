@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block body %}
+{% for i in object_list %}
+        <h6 style="font-size: 2.8ch;">{{ i.title }}<br/><span style="font-size: 20px;">
+            Asked by <a href="/{{question.user}}">{{i.user }}</a> on 
+            {{ i.asked_on }}</span>
+        </h6>
+<p style="margin-block-end: 0px;"></p>
+    <div style="font-size: 24px;">
+        <ion-icon name="heart" style="color: var(--danger)"></ion-icon>
+        <span style="position: absolute;margin-top: -3px;margin-left: 3px;">{{i.likes}} Likes</span>
+    </div>
+    <p>
+    {% for t in i.tags.all %}
+         <div class="badge badge-pill badge-{{t.bg_color}}">{{t.tag}}</div>
+     {% empty %}
+     <div class="badge badge-pill badge-dark">No Tags</div>
+    {% endfor %}
+ </p>
+ <p><a href="/{{i.user}}/questions/{{i.url}}">Go To Question &rarr;</a></p>
+ <hr>
+{% empty %}
+<h4>No Questions!!!</h4>
+{% endfor %}
+{% endblock %}

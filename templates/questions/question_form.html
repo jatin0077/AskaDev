@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block body %}
+<center>
+<form method="POST" style="max-width: 800px;">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" class="btn btn-danger btn-block" value="Ask Question"> 
+</form>
+</center>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#id_tags').select2();
+    });
+</script>
+{% endblock %}

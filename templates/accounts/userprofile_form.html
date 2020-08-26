@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block body %}
+<style type="text/css">
+	form{
+		max-width: 600px;
+	}
+	textarea{
+		max-height: 120px;
+	}
+</style>
+<center>
+	<input form="nullform" type="file" id="id_profile_picture" accept="image/*">
+    <form class="form-group" method="POST">
+    	<br/>
+    	<h6 style="font-size: 16px;">Profile Picture</h6>
+    	<img class="img-fluid" style="width: 50px;height: 50px;border-radius: 50%;margin-top: 0px;cursor: pointer;" src="/media/{{profile.profile_picture}}" id="file_btn">
+    	<p id="selected"></p>
+    	<input type="hidden" id="pp_url" name="pp_url" value="">
+    	{{form.bio|as_crispy_field}}
+    	{{form.website|as_crispy_field}}
+    	{{form.experience|as_crispy_field}}
+    	{{form.languages|as_crispy_field}}
+    	{% csrf_token %}
+    	<button class="btn btn-block btn-form-submit btn-danger">Submit</button>
+    </form>
+</center>
+{% endblock body %}
+{% block script %}
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		$('#id_languages').select2();
+    	})
+    	const bs64 = 'data:image/png;base64,'+'{{c_pp_url}}';
+    	const compress = function(e) {
+			const btn = document.querySelector('.btn-form-submit');
+			btn.disabled = true;
+		    const width = 800;
+		    const height = 800;
+		    const fileName = e.target.files[0].name;
+		    const reader = new FileReader();
+		    reader.readAsDataURL(e.target.files[0]);
+		    reader.onload = event => {
+		        const img = new Image();
+		        img.src = event.target.result;
+		        img.onload = () => {
+		                const elem = document.createElement('canvas');
+		                const pp_url = document.querySelector('#pp_url');
+		                elem.width = width;
+		                elem.height = height;
+		                const ctx = elem.getContext('2d');
+		                ctx.drawImage(img, 0, 0, width, height);
+		                ctx.canvas.toBlob((blob) => {
+		                    const file = new File([blob], fileName, {
+		                        type: 'image/jpeg',
+		                        lastModified: Date.now()
+		                    });
+		                }, 'image/jpeg', 0.92);
+		                pp_url.append(elem)
+		                pp_url.value = elem.toDataURL();
+		                document.querySelector("#file_btn").src = elem.toDataURL();
+		                btn.disabled = false;
+		            },
+		            reader.onerror = error => console.log(error);
+		    };
+		}
+    	document.querySelector('#id_profile_picture').required = false
+		document.querySelector("#file_btn").onclick = function(){
+			document.querySelector('#id_profile_picture').click();
+		}
+		document.querySelector('#id_profile_picture').onchange = function(){
+			document.querySelector('#selected').innerHTML = "Selected " + document.querySelector('#id_profile_picture').files[0].name
+			compress(event);
+		}
+		document.querySelector('#id_profile_picture').style.display='none';
+
+    </script>
+{% endblock script %}

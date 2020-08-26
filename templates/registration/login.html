@@ -1,0 +1,54 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<title>Login</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<style type="text/css">
+		body{
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			font-family: 'SF Pro Text';
+			min-height: 100vh;
+		}
+		form{
+			max-width: 400px;
+		}
+		.btn-form-submit{
+			color: #fff;
+			background: var(--red);
+			border: 1px solid var(--red);
+			height: calc(28px + 9px);
+			border-radius: 8px;
+		}
+	</style>
+</head>
+<body>
+<div class="container mt-3">
+<center>
+<form method="POST" class="login-form">
+	{% csrf_token %}
+		<h3>Login to <wbr>AskADev &rarr;</h3>
+		{{ form|crispy }}<br/>
+		<button class="btn-form-submit btn-block">Submit</button>
+		<p>&nbsp;</p>
+		<h5>
+			Don't Have an Account?
+		</h5>
+		<h5 style="margin-top: -3px;">
+			<a class="link" style="text-decoration: none" href="{% url 'register' %}">Register Now</a>
+		</h5>
+</form>
+</center>
+</div>
+<script type="text/javascript">
+	window.onload = function(){
+		document.querySelector('#id_username').autocomplete = 'off';
+		document.querySelector('#id_password').autocomplete = 'off';
+	}
+</script>
+</body>
+</html>
