@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse, redirect
+from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View, UpdateView
 from django.contrib.auth.forms import UserCreationForm
@@ -9,6 +9,52 @@ from questions.models import Question
 from PIL import Image
 from django.core.files.base import ContentFile
 import base64, secrets, io
+
+def followUser(request, user):
+	usr = User.objects.filter(username=user)
+	rusr = User.objects.filter(username=request.user) 
+	if usr.exists() and rusr.exists():
+		usr = User.objects.get(username=user)
+		rusr = User.objects.get(username=request.user)
+		userProfile = UserProfile.objects.filter(user=usr)
+		ruser = UserProfile.objects.filter(user=rusr)
+		if userProfile.exists() and ruser.exists():
+			usr = User.objects.get(username=user)
+			rusr = User.objects.get(username=request.user)
+			userProfile = UserProfile.objects.get(user=usr)
+			ruser = UserProfile.objects.get(user=rusr)
+			ruser.follows.add(userProfile)
+			ruser.save()
+			userProfile.followers.add(ruser)
+			userProfile.save()
+		else:
+			return HttpResponse("User Profile Does Not Exist")
+	else:
+		return HttpResponse("User Does Not Exist")
+	return HttpResponse(ruser.follows.all())
+
+def unfollowUser(request, user):
+	usr = User.objects.filter(username=user)
+	rusr = User.objects.filter(username=request.user) 
+	if usr.exists() and rusr.exists():
+		usr = User.objects.get(username=user)
+		rusr = User.objects.get(username=request.user)
+		userProfile = UserProfile.objects.filter(user=usr)
+		ruser = UserProfile.objects.filter(user=rusr)
+		if userProfile.exists() and ruser.exists():
+			usr = User.objects.get(username=user)
+			rusr = User.objects.get(username=request.user)
+			userProfile = UserProfile.objects.get(user=usr)
+			ruser = UserProfile.objects.get(user=rusr)
+			ruser.follows.remove(userProfile)
+			ruser.save()
+			userProfile.followers.remove(ruser)
+			userProfile.save()
+		else:
+			return HttpResponse("User Profile Does Not Exist")
+	else:
+		return HttpResponse("User Does Not Exist")
+	return HttpResponse(ruser.follows.all())
 
 def get_image_from_data_url( data_url, resize=True, base_width=600 ):
     _format, _dataurl       = data_url.split(';base64,')
@@ -44,7 +90,6 @@ def register(request):
 
 class UserProfileView(View):
 	template_name = 'accounts/user_profile.html'
-
 	def get(self,request, uname, *args, **kwargs):
 		u = UserProfile.objects.filter(
 			user=User.objects.get(username=uname)
@@ -60,12 +105,11 @@ class UserProfileView(View):
 				sameUser = True
 			else:
 				sameUser = False
-
-			if user in ruser.following.all():
+			if user in ruser.follows.all():
 				print("Following")
 				canFollow = False
 				following = "true"
-				text = "Unfollow"
+				text = "Following"
 			else:
 				print("Not following")
 				canFollow = True
