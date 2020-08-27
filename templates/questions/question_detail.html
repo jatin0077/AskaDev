@@ -1,11 +1,36 @@
 {% extends 'base.html' %}
 
 {% block body %}
+<style>
+    .like-btn, .like-btn:focus{
+        background: transparent;
+        border: none;
+        outline: 0;
+    }
+</style>
 <div class="container">
     <h6 style="font-size: 3ch;">{{ question.title }}<br/><span style="font-size: 20px;">
         Asked by <a href="/{{question.user}}">{{ question.user }}</a> on 
         {{ question.asked_on }}</span>
     </h6>
+    <div style="font-size: 24px;">
+        {% if liked %} 
+				<button class="like-btn" id="addLike">
+					<i class="fas fa-heart"  style="font-size: 1.5rem;color:var(--red); margin-top: -10px;"></i>
+				</button>
+				{% else %}
+				<button class="like-btn" id="addLike">
+					<i class="far fa-heart" style="font-size: 1.5rem;color:var(--red);margin-top: -5px;"></i>
+				</button>
+				{% endif %}
+        <span style="position:absolute">
+            {% ifequal question.likes 1 %}
+                <span id="likes_count">{{ question.likes }} Like</span>
+            {% else %}
+                <span id="likes_count">{{ question.likes }} Likes</span>
+            {% endifequal %}
+        </span>
+    </div>
     <p style="margin-block-end: 0px;">
         {% for t in question.tags.all %}
              <div class="badge badge-pill badge-{{t.bg_color}}">{{t.tag}}</div>
@@ -38,8 +63,45 @@
             </span>
         </div>
     </div>
+    <span>&nbsp;</span>
     {% empty %}
     <h4>Nobody has answered this question yet</h4>
     {% endfor %}
 </div>
+{% endblock %}
+{% block script %}
+<script>
+    document.querySelector('#addLike').onclick = function(){
+			var x = document.querySelector('.far') 
+			if(x !== null){
+				x.classList.remove('far')
+				x.classList.add('fas')
+				var x = document.querySelector('#likes_count').innerText;
+					y = parseInt(x) +1
+					if(y === 0){
+						document.querySelector("#likes_count").innerText = `${y} Like`;
+					}
+					else{
+						document.querySelector("#likes_count").innerText = `${y} Likes`;
+					}
+			}
+			else{
+				var x = document.querySelector('.fas')
+				x.classList.remove('fas')
+				x.classList.add('far')
+				var x = document.querySelector('#likes_count').innerText;
+					y = parseInt(x) - 1;
+					if(y==2){
+						document.querySelector("#likes_count").innerText = `${y} Like`
+					}
+					else{
+						document.querySelector("#likes_count").innerText = `${y} Likes`
+					}
+			}
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("POST", "/like/", true);
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+			xhttp.send("question={{ question.url }}&user={{ request.user.username }}");
+		}
+</script>
 {% endblock %}

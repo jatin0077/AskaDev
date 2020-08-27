@@ -16,13 +16,10 @@ class Question(models.Model):
 	title = models.CharField(max_length=100)
 	question = models.TextField()
 	tags = models.ManyToManyField(Tags)
-	url = models.CharField(max_length=32)
+	url = models.CharField(max_length=32, default=secrets.token_hex(20))
 	asked_on = models.DateTimeField(default=timezone.now)
 	answers = models.IntegerField(default=0)
 	likes = models.IntegerField(default=0)
-	def save(self, *args, **kwargs):
-		self.url = secrets.token_hex(20)
-		super(Question, self).save(*args, **kwargs)
 
 class Answer(models.Model):
 	answered_by = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -31,3 +28,8 @@ class Answer(models.Model):
 	url = models.CharField(max_length=32)
 	answered_at = models.DateTimeField(default=timezone.now)
 	likes = models.IntegerField(default=0)
+
+class Liker(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	question = models.ForeignKey(Question, on_delete=models.CASCADE)
+	liked = models.BooleanField(default=False)

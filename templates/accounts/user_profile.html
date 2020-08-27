@@ -2,17 +2,32 @@
 {% load static %}
 {% block body %}
 <style type="text/css">
-	.follow-btn{
+	.follow-btn, .follow-btn:focus{
 		background: white;
 		border: 2px solid var(--red);
 		color: var(--red);
 		padding: 4.5px 16px;
 		border-radius: 8px;
 		transition: 0.3s;
+		outline: 0;
 	}
 	.follow-btn:hover{
 		background: var(--red);
 		color: white;
+		text-decoration: none;
+	}
+	.following-btn, .following-btn:focus{
+		background: var(--red);
+		border: 2px solid var(--red);
+		color: white;
+		padding: 4.5px 16px;
+		border-radius: 8px;
+		transition: 0.3s;
+		outline: 0;
+	}
+	.following-btn:hover{
+		background: white;
+		color: var(--red);
 		text-decoration: none;
 	}
 	.table thead th, .table td{
@@ -102,36 +117,29 @@
 		if(following){
 		var x = document.querySelector('.following-btn');
 		x.onclick = function(){
+		x.classList.add('follow-btn')
+	    x.classList.remove('following-btn')
+	    x.innerText = "Follow"
+	    following = false;
+	    followers.innerText = parseInt(followers.innerText)-1;
+	    checkFollowing();
+	    	
 		var xhttp = new XMLHttpRequest();
-	  	xhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-	      	x.classList.add('follow-btn')
-	      	x.classList.remove('following-btn')
-	      	x.innerText = "Follow"
-	      	following = false;
-	      	followers.innerText = parseInt(followers.innerText)-1;
-	      	checkFollowing();
-	    	}
-		};
-		xhttp.open("GET", "/unfollow/{{user}}", true);
+		xhttp.open("GET", "/unfollow/{{profile.user}}", true);
 		xhttp.send();
 		}
-		}
-		else{
+	}
+	else{
 			var x = document.querySelector('.follow-btn');
 			x.onclick = function(){
-			var xhttp = new XMLHttpRequest();
-		  	xhttp.onreadystatechange = function() {
-		    if (this.readyState == 4 && this.status == 200) {
-		      	x.classList.add('following-btn')
+				x.classList.add('following-btn')
 		      	x.classList.remove('follow-btn')
 		      	x.innerText = "Following"
 		      	following = true;
 		      	followers.innerText = parseInt(followers.innerText)+1;
 		      	checkFollowing();
-		    }
-		};
-		xhttp.open("GET", "/follow/{{user}}", true);
+			var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "/follow/{{profile.user}}", true);
 		xhttp.send();
 		}
 	}	
@@ -139,36 +147,29 @@
 	if(following){
 		var x = document.querySelector('.following-btn');
 		x.onclick = function(){
-		var xhttp = new XMLHttpRequest();
-	  	xhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-	      	x.classList.add('follow-btn')
+			x.classList.add('follow-btn')
 	      	x.classList.remove('following-btn')
 	      	x.innerText = "Follow"
 	      	followers.innerText = parseInt(followers.innerText)-1;
 	      	following = false
 	      	checkFollowing()
-	    	}
-		};
-		xhttp.open("GET", "/unfollow/{{user}}", true);
+	    	
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "/unfollow/{{profile.user}}", true);
 		xhttp.send();
 		}
 		}
 		else{
 			var x = document.querySelector('.follow-btn');
 			x.onclick = function(){
-			var xhttp = new XMLHttpRequest();
-		  	xhttp.onreadystatechange = function() {
-		    if (this.readyState == 4 && this.status == 200) {
-		      	x.classList.add('following-btn')
+				x.classList.add('following-btn')
 		      	x.classList.remove('follow-btn')
 		      	x.innerText = "Following"
 		      	following = true
 		      	followers.innerText = parseInt(followers.innerText)+1;
 		      	checkFollowing()
-		    }
-		};
-		xhttp.open("GET", "/follow/{{user}}", true);
+			var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "/follow/{{profile.user}}", true);
 		xhttp.send();
 		}
 	}
