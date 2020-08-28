@@ -10,11 +10,17 @@
 - Got a bug? DM me on [instagram](https://instagram.com/djangostaan).:left_speech_bubble:
 
 ### To Do:writing_hand:
-- Add Follow / Unfollow System(AJAX and Django Views)
-- Add Likes / Dislikes features(AJAX and Django Views)
+- Add Likes / Dislikes feature on Answers(AJAX and Django Views)
+- A proper implementation of Top Developers View.(Current A Developer who answers the most is trending😅)
 
 ### Technologies Used	:computer:
 - HTML
 - CSS and Bootstrap
 - JavaScript and jQuery + select2 at some places
 - Django(Python)
+- [Twemoji](https://twemoji.twitter.com/) For Emoji Rendering
+- Converting Images to Base64 URL.
+
+### Got Any Ideas :computer:
+- DM me on Instagram [instagram](https://instagram.com/djangostaan) :left_speech_buble:
+- [Email me](mailto:devbmehta04@gmail.com)
