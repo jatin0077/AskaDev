@@ -28,7 +28,7 @@ class UserProfile(models.Model):
 	languages = models.ManyToManyField(ProgrammingLanguage)
 	follows = models.ManyToManyField('UserProfile',blank=True, related_name='following')
 	followers = models.ManyToManyField('UserProfile', blank=True)
-
+	points = models.PositiveIntegerField(default=0)
 	def __str__(self):
 		return str(self.user)
 	# def save(self, *args, **kwargs):

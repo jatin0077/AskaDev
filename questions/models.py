@@ -29,6 +29,11 @@ class Answer(models.Model):
 	answered_at = models.DateTimeField(default=timezone.now)
 	likes = models.IntegerField(default=0)
 
+class AnswerLiker(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+	liked = models.BooleanField(default=False)
+
 class Liker(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)

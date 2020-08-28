@@ -2,10 +2,40 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.views.generic import CreateView, ListView
-from .models import Question, Answer, Liker
+from accounts.models import UserProfile
+from .models import Question, Answer, Liker, AnswerLiker
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import secrets
+
+@csrf_exempt
+def likeAnswer(request):
+	if request.method == 'POST':
+		post = request.POST.get('answer')
+		user = request.POST.get('user')
+		liked = AnswerLiker.objects.filter(
+            user=User.objects.get(username=user),
+            Answer=Answer.objects.get(url=post)
+        ).exists()
+		if not liked:
+			l = AnswerLiker(
+				user=User.objects.get(username=user),
+				answer=Answer.objects.get(url=post),
+				liked=True
+			)
+			l.save()
+			p = Answer.objects.get(url=post)
+			p.likes += 1
+			p.save()
+		else:
+			l = AnswerLiker.objects.get(user=User.objects.get(username=user),question=Question.objects.get(url=post))
+			l.delete()
+			p = Answer.objects.get(url=post)
+			p.likes -= 1
+			p.save()
+		return HttpResponse(liked)
+	else:
+		return redirect('/')
 @csrf_exempt
 def likePost(request):
 	if request.method == 'POST':
@@ -24,14 +54,21 @@ def likePost(request):
 			l.save()
 			p = Question.objects.get(url=post)
 			p.likes += 1
+			asked_by = Question.objects.get(url=post).user
+			up = UserProfile.objects.get(user=asked_by)
+			up.points += 1
+			up.save()
 			p.save()
 		else:
 			l = Liker.objects.get(user=User.objects.get(username=user),question=Question.objects.get(url=post))
 			l.delete()
 			p = Question.objects.get(url=post)
 			p.likes -= 1
+			asked_by = Question.objects.get(url=post).user
+			up = UserProfile.objects.get(user=asked_by)
+			up.points -= 1
+			up.save()
 			p.save()
-			print("Here")
 		return HttpResponse(liked)
 	else:
 		return redirect('/')
