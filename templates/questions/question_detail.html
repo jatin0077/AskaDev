@@ -51,15 +51,15 @@
 <div class="container">
     <br/>
     <h3>Answers</h3>
-    {% for a in answers %}
+    {% for a in answers %}  
     <div class="card">
         <div class="card-body" style="padding: 0.75rem;">
             <p>{{a.answer|safe|linebreaks}}</p>
         </div>
         <div class="card-footer" style="padding: 0.75rem;">
             <span style="font-size: 14px;">
-                Answered By <a href="/{{a.answered_by}}">{{ question.user }}</a> on 
-                {{ question.asked_on }}
+                Answered By <a href="/{{a.answered_by}}">{{ a.answered_by }}</a> on 
+                {{ a.answered_at }}
             </span>
         </div>
     </div>
@@ -72,13 +72,14 @@
 {% block script %}
 <script>
     document.querySelector('#addLike').onclick = function(){
+		document.querySelector('#addLike').disabled = true
 			var x = document.querySelector('.far') 
 			if(x !== null){
 				x.classList.remove('far')
 				x.classList.add('fas')
 				var x = document.querySelector('#likes_count').innerText;
 					y = parseInt(x) +1
-					if(y === 0){
+					if(y===1){
 						document.querySelector("#likes_count").innerText = `${y} Like`;
 					}
 					else{
@@ -91,7 +92,7 @@
 				x.classList.add('far')
 				var x = document.querySelector('#likes_count').innerText;
 					y = parseInt(x) - 1;
-					if(y==2){
+					if(y===1){
 						document.querySelector("#likes_count").innerText = `${y} Like`
 					}
 					else{
@@ -99,6 +100,11 @@
 					}
 			}
 			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					document.querySelector('#addLike').disabled = false
+				}
+			};
 			xhttp.open("POST", "/like/", true);
 			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
 			xhttp.send("question={{ question.url }}&user={{ request.user.username }}");
