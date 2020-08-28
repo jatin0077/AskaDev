@@ -7,7 +7,7 @@ urlpatterns = [
     path('questions/create', views.QuestionCreateView.as_view(), name='create_question'),
     path('answer/<slug:question>/', views.AnswerCreateView.as_view(),name='answer'),
     path('trending/questions/', views.TrendingQuestionView.as_view(), name='trending'),
-    path('like/', views.likePost, name='like_question'),
+	path('like/', views.likePost, name='like_question'),
 	path('like/answer/', views.likeAnswer, name='like_answer')
 ]
 
