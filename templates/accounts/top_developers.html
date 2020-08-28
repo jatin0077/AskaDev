@@ -35,6 +35,8 @@
 
 .card-btn:hover{
   background: #c12837;
+  color: #fff;
+  text-decoration: none;
 }
 </style>
 {% for dev in developers %}
@@ -69,7 +71,7 @@
 	<div class="title">
 			{{dev.bio|linebreaks|safe}}
 	</div>
-	<p><button class="card-btn">Visit Profile</button></p>
+	<p><a class="card-btn" href="/{{dev.user}}">Visit Profile</a></p>
   	</div>  
   <span>&nbsp;</span>
 {% endfor %}
