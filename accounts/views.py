@@ -1,6 +1,6 @@
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.http import HttpResponse
-from django.views.generic import TemplateView, View, UpdateView
+from django.views.generic import TemplateView, View, UpdateView, ListView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -10,6 +10,19 @@ from PIL import Image
 from django.core.files.base import ContentFile
 import base64, secrets, io
 
+class TopDevelopers(ListView):
+	model = UserProfile
+	template_name = 'accounts/top_developers.html'
+	context_object_name = 'developers'
+
+	def get_context_data(self,*args, **kwargs):
+		context = super(TopDevelopers, self).get_context_data()
+		context['asked_q'] = Question.objects.filter(user=User.objects.get(username=self.request.user)).count()
+		return context
+
+	def get_queryset(self, *args, **kwargs):
+		qs = UserProfile.objects.all().order_by('-points').exclude(points=0)
+		return qs
 def followUser(request, user):
 	usr = User.objects.filter(username=user)
 	rusr = User.objects.filter(username=request.user) 
