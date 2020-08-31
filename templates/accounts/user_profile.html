@@ -47,10 +47,26 @@
 		margin-bottom: 5px;
 		font-size: 24px;
 	}
+	.active-pp{
+		width: 14px;
+		height: 14px;
+		margin-top: -4px;
+		margin-left: -14px;
+		border-radius: 50%;
+		position: absolute;
+		background-color: #11e743;
+		display: inline-block;
+	}
 </style>
 <div class="container">
-		<h4 id="profile_picture"><img style="width: 50px;height: 50px;border-radius: 50%;border: 3px solid var(--red);" src="/media/{{profile.profile_picture}}" class="img-fluid"><span class="ml-4">{{ profile.user }}</span></h4>
-		<span class="float-right" style="margin-top: -50px;">
+		<h4 id="profile_picture" style="
+		display: inline-block;">
+			<img  style="width: 50px;height: 50px;border-radius: 14px;" 
+			src="/media/{{profile.profile_picture}}" 
+			class="img-fluid propicture">
+			<div class="active-pp">&nbsp;</div>
+			<span class="ml-4">{{ profile.user }}</span></h4>
+		<span class="float-right" style="margin-top: 10px;">
 			{% if sameUser %}
 				<a href="{% url 'edit_profile' profile.user.id %}" class="follow-btn">Edit Profile</a>
 				{% else %}
@@ -66,7 +82,7 @@
 		<span id="bio">
 		{{ profile.bio|linebreaks }}
 		{% if profile.website %}
-		<a style="margin-top: -20px;position: absolute;" href="{{profile.website}}">{{ profile.website }}</a>
+		<a target="_blank" style="margin-top: -20px;position: absolute;" href="{{profile.website}}">{{ profile.website }}</a>
 		{% endif %}
 		</span>
 		</div>
