@@ -6,10 +6,10 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import UserProfile,ProgrammingLanguage
 from questions.models import Question
-from PIL import Image
+from PIL import Image, ImageOps
 from django.core.files.base import ContentFile
 import base64, secrets, io
-
+import os
 class TopDevelopers(ListView):
 	model = UserProfile
 	template_name = 'accounts/top_developers.html'
@@ -86,6 +86,13 @@ def get_image_from_data_url( data_url, resize=True, base_width=600 ):
 class HomePage(TemplateView):
 	template_name = 'accounts/home.html'
 
+	def get_context_data(self, *args, **kwargs):
+		context = super(HomePage, self).get_context_data(*args,**kwargs)
+		if self.request.user.is_authenticated:
+			user = User.objects.get(username=self.request.user.username)
+			qs = Question.objects.filter(user=user)
+			context['q_list'] = qs
+		return context
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -166,7 +173,7 @@ class UserProfileUpdateView(UpdateView):
 				bio="",
 				website=None,
 				experience=1,	
-				profile_picture=f'static/images/profile_picture/Dev.png'			
+				profile_picture=f'static/images/profile_picture/default.png'			
 			)
 			up.save()
 			up.languages.add(ProgrammingLanguage.objects.get(language='C'))
@@ -183,6 +190,7 @@ class UserProfileUpdateView(UpdateView):
 		pp_url = self.request.POST.get('pp_url')
 		try:
 			img = get_image_from_data_url(pp_url)[0]
+			form.instance.profile_picture.delete()
 			form.instance.profile_picture = img
 			form.instance.save()
 			return redirect_url
