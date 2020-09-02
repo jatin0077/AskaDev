@@ -10,7 +10,7 @@ def compress(image):
     im_io = BytesIO() 
     if im.mode in ("RGBA", "P"):
     	im = im.convert("RGB")
-    im.save(im_io, 'JPEG', quality=60) 
+    im.save(im_io, 'JPEG',optimize=True,quality=60) 
     new_image = File(im_io, name=image.name)
     return new_image
 
@@ -32,7 +32,7 @@ class UserProfile(models.Model):
 	points = models.PositiveIntegerField(default=0)
 	def __str__(self):
 		return str(self.user)
-	# def save(self, *args, **kwargs):
-		# new_image = compress(self.profile_picture)
-		# self.profile_picture = new_image
-		# super().save(*args, **kwargs)
+	def save(self, *args, **kwargs):
+		new_image = compress(self.profile_picture)
+		self.profile_picture = new_image
+		super().save(*args, **kwargs)

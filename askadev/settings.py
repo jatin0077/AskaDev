@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'questions',
     'crispy_forms',
 	'smartfields',
+	'cloudinary'
 ]
 
 MIDDLEWARE = [
