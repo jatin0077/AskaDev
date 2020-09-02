@@ -10,6 +10,7 @@ def compress(image):
     im_io = BytesIO() 
     if im.mode in ("RGBA", "P"):
     	im = im.convert("RGB")
+	im = im.resize((400),(400))
     im.save(im_io, 'JPEG',optimize=True,quality=60) 
     new_image = File(im_io, name=image.name)
     return new_image
