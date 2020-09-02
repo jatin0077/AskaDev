@@ -14,7 +14,7 @@
     <form class="form-group" method="POST">
     	<br/>
     	<h6 style="font-size: 16px;">Profile Picture</h6>
-    	<img class="img-fluid" style="width: 50px;height: 50px;border-radius: 50%;margin-top: 0px;cursor: pointer;" src="/media/{{profile.profile_picture.url}}" id="file_btn">
+    	<img class="img-fluid" style="width: 50px;height: 50px;border-radius: 50%;margin-top: 0px;cursor: pointer;" src="/media/{{profile.profile_picture}}" id="file_btn">
     	<p id="selected"></p>
     	<input type="hidden" id="pp_url" name="pp_url" value="">
     	{{form.bio|as_crispy_field}}
@@ -35,12 +35,12 @@
     	const compress = function(e) {
 			const btn = document.querySelector('.btn-form-submit');
 			btn.disabled = true;
-		    const width = 400;
-		    const height = 400;
+		    const width = 800;
+		    const height = 800;
 		    const fileName = e.target.files[0].name;
 		    const reader = new FileReader();
 		    reader.readAsDataURL(e.target.files[0]);
-		    reader.onload = (event) => {
+		    reader.onload = event => {
 		        const img = new Image();
 		        img.src = event.target.result;
 		        img.onload = () => {
@@ -65,13 +65,14 @@
 		    };
 		}
     	document.querySelector('#id_profile_picture').required = false
-		const file_btn = document.querySelector("#file_btn")
-		file_btn.onclick = () => document.querySelector('#id_profile_picture').click();
-		const id_profile_picture = document.querySelector('#id_profile_picture')
-		id_profile_picture.onchange = () => {
+		document.querySelector("#file_btn").onclick = function(){
+			document.querySelector('#id_profile_picture').click();
+		}
+		document.querySelector('#id_profile_picture').onchange = function(){
 			document.querySelector('#selected').innerHTML = "Selected " + document.querySelector('#id_profile_picture').files[0].name
 			compress(event);
 		}
-		id_profile_picture.style.display='none';
+		document.querySelector('#id_profile_picture').style.display='none';
+
     </script>
 {% endblock script %}
