@@ -11,5 +11,5 @@
 ### Do you have questions about the source code?
 * Ask any question about how to use AskaDeveloper by [Email](mailto:devbmehta04@gmail.com) or [Instagram Direct Message](https://instagram.com/djangostaan/).
 
-> Thanks! ❤️ ❤️ ❤️
-> AskaDeveloper Team
+##### Thanks! ❤️ ❤️ ❤️
+##### AskaDeveloper Team
