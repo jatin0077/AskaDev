@@ -1,4 +1,4 @@
-# AskaDev :man_technologist:
+# AskaDeveloper :computer:
 ### Get your questions:thinking: answered by Developers
 
 ### Why AskaDev?

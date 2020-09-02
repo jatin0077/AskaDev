@@ -1,6 +1,67 @@
 {% extends "base.html" %}
 {% block body %}
+{% if request.user.is_authenticated %}
+    {% for i in q_list %}
+        <h6 style="font-size: 28px;">{{ i.title }}<br/><span style="font-size: 20px;">
+            You asked this on 
+            {{ i.asked_on }}</span>
+        </h6>
+        <p style="margin-block-end: 0px;"></p>
+        <div style="font-size: 24px;">
+            <ion-icon name="heart" style="color: var(--danger)"></ion-icon>
+            <span style="position: absolute;margin-top: -3px;margin-left: 3px;">{{i.likes}} Likes</span>
+        </div>
+        <p>
+        {% for t in i.tags.all %}
+             <div class="badge badge-pill badge-{{t.bg_color}}">{{t.tag}}</div>
+        {% empty %}
+        <div class="badge badge-pill badge-dark">No Tags</div>
+        {% endfor %}
+    </p>
+    <p><a href="/{{i.user}}/questions/{{i.url}}">Go To Question &rarr;</a></p>
+    <hr>
+    {% empty %}
+    <h4>No Questions!!!</h4>
+    {% endfor %}
     <br/>
-    <h1>Welcome To AskaDeveloper</h1>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus omnis, magnam minima laudantium sequi, animi ab molestias consequatur dolorem fugit inventore. Labore aliquid nulla adipisci delectus illo suscipit sit quas blanditiis dolore accusantium nisi aspernatur voluptatum voluptatem, nihil, dignissimos optio ut numquam repudiandae impedit, amet ullam molestias omnis! Perferendis placeat maxime impedit architecto totam provident. Atque, sit reiciendis possimus ipsum ratione facilis voluptatibus, eveniet consectetur ullam enim vero quod quos sunt repellat rem! Maxime amet provident laudantium ea ipsam inventore autem, ut saepe? Repudiandae dolorem et voluptatem sit, praesentium, necessitatibus veritatis ipsum tempora id iusto dolor error a earum aliquid nesciunt corrupti pariatur eaque, debitis ducimus voluptates? Eius aut dolorem tempore architecto voluptates. Delectus velit voluptatibus dolore recusandae quibusdam ratione quam assumenda nemo ullam laboriosam doloremque iste accusantium architecto quidem omnis obcaecati, beatae, exercitationem eum corrupti magni autem labore. Perferendis laborum suscipit ipsam itaque veritatis qui, aperiam est deserunt vero.</p>
+{% else %}
+<h1>AskaDeveloper 👨‍💻</h1>
+<h3>Get your questions🤔 answered by Developers</h3>
+<h4>Why AskaDev?</h4>
+<ul>
+	<li>Ask your queries and get solutions from other developers.🤝</li>
+	<li>I hope this may benefit you.🙏</li>
+	<li>This website is only for programmers.👨‍💻</li>
+</ul>
+<h4>It's Still Under Developement</h4>
+<ul>
+	<li>Got a bug? DM me on instagram.🗨️</li>
+</ul>
+<h4>To Do✍️</h4>
+<ul>
+	<li>Add Likes / Dislikes feature on Answers(AJAX and Django Views)</li>
+	<li>A proper implementation of Top Developers View.(Currently A Developer who answers the most is trending😅)</li>
+	<li>Integrate a WYSIWYG Editor for Question and Answers</li>
+</ul>
+Technologies Used 💻
+HTML
+CSS and Bootstrap
+JavaScript and jQuery + select2 at some places
+Django(Python)
+Twemoji For Emoji Rendering
+Converting Images to Base64 URL.
+Got Any Ideas 💻
+DM me on Instagram instagram 🗨️
+Email me
+<p></p>
+<p></p>
+<div class="text-center  d-flex justify-content-center">
+	<div class="row" style="max-width: 800px;">
+			<a href="/login/" class="btn-login col">Login</a>
+    		&nbsp;
+			<a href="/register/" class="btn-login-outline col">Register</a>
+	</div>
+</div>
+<p></p>
+{% endif %}
 {% endblock body %}
