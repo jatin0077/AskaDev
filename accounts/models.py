@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from PIL import Image
 from io import BytesIO
 from django.core.files import File
-from versatileimagefield.fields import VersatileImageField
+from smartfields.fields import ImageField
+import os
 def compress(image):
     im = Image.open(image)
     im_io = BytesIO() 
@@ -23,7 +24,7 @@ class UserProfile(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	bio = models.TextField(max_length=200, help_text='A Short Bio about yourself')
 	website = models.URLField(blank=True, null=True)
-	profile_picture = VersatileImageField(upload_to='static/images/profile_picture', max_length=255, blank=True, default='')
+	profile_picture = ImageField(upload_to='static/images/profile_picture', max_length=255, blank=True, default='')
 	experience = models.PositiveIntegerField(help_text='Exp. in years')
 	languages = models.ManyToManyField(ProgrammingLanguage)
 	follows = models.ManyToManyField('UserProfile',blank=True, related_name='following')

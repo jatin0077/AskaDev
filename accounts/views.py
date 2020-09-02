@@ -190,7 +190,6 @@ class UserProfileUpdateView(UpdateView):
 		pp_url = self.request.POST.get('pp_url')
 		try:
 			img = get_image_from_data_url(pp_url)[0]
-			form.instance.profile_picture.delete()
 			form.instance.profile_picture = img
 			form.instance.save()
 			return redirect_url

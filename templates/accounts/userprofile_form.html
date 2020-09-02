@@ -35,12 +35,12 @@
     	const compress = function(e) {
 			const btn = document.querySelector('.btn-form-submit');
 			btn.disabled = true;
-		    const width = 250;
-		    const height = 250;
+		    const width = 400;
+		    const height = 400;
 		    const fileName = e.target.files[0].name;
 		    const reader = new FileReader();
 		    reader.readAsDataURL(e.target.files[0]);
-		    reader.onload = event => {
+		    reader.onload = (event) => {
 		        const img = new Image();
 		        img.src = event.target.result;
 		        img.onload = () => {
@@ -65,14 +65,13 @@
 		    };
 		}
     	document.querySelector('#id_profile_picture').required = false
-		document.querySelector("#file_btn").onclick = function(){
-			document.querySelector('#id_profile_picture').click();
-		}
-		document.querySelector('#id_profile_picture').onchange = function(){
+		const file_btn = document.querySelector("#file_btn")
+		file_btn.onclick = () => document.querySelector('#id_profile_picture').click();
+		const id_profile_picture = document.querySelector('#id_profile_picture')
+		id_profile_picture.onchange = () => {
 			document.querySelector('#selected').innerHTML = "Selected " + document.querySelector('#id_profile_picture').files[0].name
 			compress(event);
 		}
-		document.querySelector('#id_profile_picture').style.display='none';
-
+		id_profile_picture.style.display='none';
     </script>
 {% endblock script %}

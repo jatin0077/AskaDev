@@ -126,37 +126,36 @@
 </div>
 <script type="text/javascript">
 	var following = {{following}};
-	var follow_btn = document.getElementsByTagName('BUTTON')[1];
+	const follow_btn = document.getElementsByTagName('BUTTON')[1];
 	var init_text = "{{text}}"
-	var followers = document.querySelector('#followers_count');
+	const followers = document.querySelector('#followers_count');
 	function checkFollowing(){
 		if(following){
-		var x = document.querySelector('.following-btn');
-		x.onclick = function(){
-		x.classList.add('follow-btn')
-	    x.classList.remove('following-btn')
-	    x.innerText = "Follow"
-	    following = false;
-	    followers.innerText = parseInt(followers.innerText)-1;
-	    checkFollowing();
-	    	
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "/unfollow/{{profile.user}}", true);
-		xhttp.send();
+			const x = document.querySelector('.following-btn');
+			x.onclick = () =>{
+				x.classList.add('follow-btn')
+	    		x.classList.remove('following-btn')
+				x.innerText = "Follow"
+				following = false;
+				followers.innerText = parseInt(followers.innerText)-1;
+				checkFollowing();	
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("GET", "/unfollow/{{profile.user}}", true);
+				xhttp.send();
+			}
 		}
-	}
-	else{
-			var x = document.querySelector('.follow-btn');
+		else{
+			const x = document.querySelector('.follow-btn');
 			x.onclick = function(){
-				x.classList.add('following-btn')
-		      	x.classList.remove('follow-btn')
-		      	x.innerText = "Following"
-		      	following = true;
-		      	followers.innerText = parseInt(followers.innerText)+1;
-		      	checkFollowing();
+			x.classList.add('following-btn')
+			x.classList.remove('follow-btn')
+			x.innerText = "Following"
+			following = true;
+			followers.innerText = parseInt(followers.innerText)+1;
+			checkFollowing();
 			var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "/follow/{{profile.user}}", true);
-		xhttp.send();
+			xhttp.open("GET", "/follow/{{profile.user}}", true);
+			xhttp.send();
 		}
 	}	
 	}
@@ -168,11 +167,10 @@
 	      	x.innerText = "Follow"
 	      	followers.innerText = parseInt(followers.innerText)-1;
 	      	following = false
-	      	checkFollowing()
-	    	
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "/unfollow/{{profile.user}}", true);
-		xhttp.send();
+	      	checkFollowing()	
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("GET", "/unfollow/{{profile.user}}", true);
+			xhttp.send();
 		}
 		}
 		else{

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'accounts',
     'questions',
     'crispy_forms',
-	'versatileimagefield',
+	'smartfields',
 ]
 
 MIDDLEWARE = [
