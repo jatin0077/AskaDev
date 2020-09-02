@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'questions',
-    'crispy_forms'
+    'crispy_forms',
+	'versatileimagefield',
 ]
 
 MIDDLEWARE = [
