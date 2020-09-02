@@ -119,6 +119,8 @@ class UserProfileView(View):
 			).order_by('-asked_on')
 		if u.exists():
 			user = UserProfile.objects.get(user=User.objects.get(username=uname))
+			rusr = get_object_or_404(User, username=request.user.username)
+			ruser = get_object_or_404(UserProfile, user=rusr)
 			ruser = UserProfile.objects.get(user=User.objects.get(username=request.user))
 			u = u[0]
 			if user == ruser:
