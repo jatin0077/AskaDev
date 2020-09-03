@@ -41,6 +41,11 @@
 		</vs-col>
 	  </vs-row>
 	  <p></p>
+	{% empty %}
+	<h4>No Question Askeds</h4>
+	<vs-button color="danger" icon="add" type="filled">
+		Ask a Question
+	</vs-button>
 	{% endfor %}
 	<br/>
 </div>
