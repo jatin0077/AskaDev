@@ -1,30 +1,56 @@
 {% extends "base.html" %}
 {% block body %}
 {% if request.user.is_authenticated %}
-    {% for i in q_list %}
-        <h6 style="font-size: 28px;">{{ i.title }}<br/><span style="font-size: 20px;">
-            You asked this on 
-            {{ i.asked_on }}</span>
-        </h6>
-        <p style="margin-block-end: 0px;"></p>
-        <div style="font-size: 24px;">
-            <ion-icon name="heart" style="color: var(--danger)"></ion-icon>
-            <span style="position: absolute;margin-top: -3px;margin-left: 3px;">{{i.likes}} Likes</span>
-        </div>
-        <p>
-        {% for t in i.tags.all %}
-             <div class="badge badge-pill badge-{{t.bg_color}}">{{t.tag}}</div>
-        {% empty %}
-        <div class="badge badge-pill badge-dark">No Tags</div>
-        {% endfor %}
-    </p>
-    <p><a href="/{{i.user}}/questions/{{i.url}}">Go To Question &rarr;</a></p>
-    <hr>
-    {% empty %}
-    <h4>No Questions!!!</h4>
-    {% endfor %}
-    <br/>
+<div id="app-home">
+	{% for i in q_list %}
+	<vs-row vs-justify="center">
+		<vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
+		  <vs-card actionable class="cardx">
+			<div slot="header">
+			  <h4>
+				  {{i.title}}
+			  </h4>
+			  <h5>You asked this on {{ i.asked_on }}</h5>
+			 <h5>
+				<vs-icon color="danger" icon="favorite"></vs-icon> 
+				<span style="position:absolute;margin-left: 3px;">{{ i.likes }} Likes</span>
+		  	</h5>
+				<p>
+					{% for t in i.tags.all %}
+						<vs-chip color="{{ t.bg_color }}">{{t.tag}}</vs-chip>
+					{% empty %}
+					<div class="badge badge-pill badge-dark">no tags</div>
+					{% endfor %}
+				</p>
+			</div>
+			<div>
+			</div>
+			<div slot="footer">
+			  <vs-row vs-justify="flex-end">
+				<vs-button 
+				color="#54cdfb"
+				gradient-color-secondary="#5252e8"
+				type="gradient"
+				href="/{{i.user}}/questions/{{i.url}}/"
+				>
+					View Question
+				</vs-button>
+			  </vs-row>
+			</div>
+		  </vs-card>
+		</vs-col>
+	  </vs-row>
+	  <p></p>
+	{% empty %}
+	<h4>No Question Askeds</h4>
+	<vs-button color="danger" icon="add" type="filled" href="/questions/create">
+		Ask a Question
+	</vs-button>
+	{% endfor %}
+	<br/>
+</div>
 {% else %}
+<div id="app-home">
 <h1>AskaDeveloper 👨‍💻</h1>
 <h3>Get your questions🤔 answered by Developers</h3>
 <h4>Why AskaDev?</h4>
@@ -61,11 +87,32 @@
 <p></p>
 <div class="text-center  d-flex justify-content-center">
 	<div class="row" style="max-width: 800px;">
-			<a href="/login/" class="btn-login col">Login</a>
-    		&nbsp;
-			<a href="/register/" class="btn-login-outline col">Register</a>
+		<vs-row vs-w="12">
+			<vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="6" vs-sm="12" vs-xs="12" >
+				<vs-button color="danger" type="filled" icon="login" href="/login/">
+					Login
+				</vs-button>
+			</vs-col>
+			<vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="6" vs-sm="12" vs-xs="12">
+				<vs-button color="danger" type="flat" icon="person_add" href="/register/">
+					Register	
+				</vs-button>	
+			</vs-col>
+		  </vs-row>
 	</div>
 </div>
 <p></p>
+</div>
 {% endif %}
 {% endblock body %}
+{% block script %}
+<script>
+const app_home = new Vue({
+	el: '#app-home',
+	data: {
+		width: '100px',
+	},
+	delimitors: ['[[', ']]'],
+});
+</script>
+{% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load markdown_deux_tags %}
 {% block body %}
 <style>
     .like-btn, .like-btn:focus{
@@ -7,27 +7,35 @@
         border: none;
         outline: 0;
     }
+	li{
+		position: relative;
+		margin-left: 20px;
+	}
 </style>
+<div id="app_detail">
 <div class="container">
     <h6 style="font-size: 28px;">{{ question.title }}<br/><span style="font-size: 20px;">
-        Asked by <a href="/{{question.user}}">{{ question.user }}</a> on 
+		Asked by 
+		<vs-button size="small" line-origin="left" type="line">
+			{{ question.user }}
+		</vs-button>on 
         {{ question.asked_on }}</span>
     </h6>
     <div style="font-size: 24px;">
         {% if liked %} 
-				<button class="like-btn" id="addLike">
+				<button v-on:click="likeQuestion" class="like-btn" id="addLike">
 					<i class="fas fa-heart"  style="font-size: 1.5rem;color:var(--red); margin-top: -10px;"></i>
 				</button>
 				{% else %}
-				<button class="like-btn" id="addLike">
+				<button v-on:click="likeQuestion" class="like-btn" id="addLike">
 					<i class="far fa-heart" style="font-size: 1.5rem;color:var(--red);margin-top: -5px;"></i>
 				</button>
 				{% endif %}
-        <span style="position:absolute">
+        <span style="position:absolute;margin-left: 4px;">
             {% ifequal question.likes 1 %}
-                <span id="likes_count">{{ question.likes }} Like</span>
+                <span id="likes_count">{{ question.likes }}</span><span> Like</span>
             {% else %}
-                <span id="likes_count">{{ question.likes }} Likes</span>
+                <span id="likes_count">{{ question.likes }}</span><span> Likes</span>
             {% endifequal %}
         </span>
     </div>
@@ -37,15 +45,30 @@
          {% empty %}
          <div class="badge badge-pill badge-dark">No Tags</div>
         {% endfor %}
-     </p>
-    <div class="card">
-        <div class="card-body" style="padding: 0.75rem;">
-            <p>{{question.question|safe|linebreaks}}</p>
-        </div>
-        <div class="card-footer" style="padding: 0.75rem;">
-            <a href="/{{user}}" class="btn btn-outline-danger">Visit Profile</a>
-            <a href="/answer/{{question.url}}/" class="btn btn-danger">Answer</a>
-        </div>
+	 </p>
+	 <vs-row vs-justify="center">
+		<vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
+		  <vs-card>
+			<div slot="header">
+			  <h3>
+				  Question
+			  </h3>
+			</div>
+			<div>
+				{% markdown %}
+{{question.question|safe}}
+				{% endmarkdown %}
+			</div>
+			<div slot="footer">
+			  <vs-row vs-justify="flex-end">
+				<vs-button href="/{{question.user}}" type="filled" color="danger" icon="person">Visit Profile</vs-button>
+				&nbsp;
+				<vs-button href="/answer/{{question.url}}/" type="filled" color="primary" icon="comment">Answer</vs-button>
+			  </vs-row>
+			</div>
+		  </vs-card>
+		</vs-col>
+	  </vs-row>
     </div>
 </div>
 <div class="container">
@@ -68,46 +91,47 @@
     <h4>Nobody has answered this question yet</h4>
     {% endfor %}
 </div>
+</div>
 {% endblock %}
 {% block script %}
 <script>
-    document.querySelector('#addLike').onclick = function(){
-		document.querySelector('#addLike').disabled = true
-			var x = document.querySelector('.far') 
-			if(x !== null){
-				x.classList.remove('far')
-				x.classList.add('fas')
-				var x = document.querySelector('#likes_count').innerText;
-					y = parseInt(x) +1
-					if(y===1){
-						document.querySelector("#likes_count").innerText = `${y} Like`;
+	const app_detail = new Vue({
+		el: '#app_detail',
+		methods:{
+		likeQuestion:  function(){
+			document.querySelector('#addLike').disabled = true;
+			axios.post('/like/', {
+    			question: '{{question.url}}',
+   				user: '{{request.user}}'
+				  })
+				.then((response) => {
+					var liked = false
+					var like_btn = document.querySelector(".far"); 
+					if(like_btn === null){
+						liked = true;
 					}
-					else{
-						document.querySelector("#likes_count").innerText = `${y} Likes`;
+					if(liked){
+						let like_btn = document.querySelector(".fas");
+						like_btn.classList.add("far");
+						like_btn.classList.remove("fas");
+						let likes_count = document.querySelector("#likes_count");
+						likes_count.innerHTML = parseInt(likes_count.innerHTML)- 1; 
+					}else{
+						let like_btn = document.querySelector(".far");
+						like_btn.classList.add("fas");
+						like_btn.classList.remove("far");
+						let likes_count = document.querySelector("#likes_count");
+						likes_count.innerHTML = parseInt(likes_count.innerHTML) + 1
 					}
+				document.querySelector('#addLike').disabled = false;
+				})
+				.then((error) => {
+					if(error !== undefined){
+						console.log(error);
+					}
+				})
 			}
-			else{
-				var x = document.querySelector('.fas')
-				x.classList.remove('fas')
-				x.classList.add('far')
-				var x = document.querySelector('#likes_count').innerText;
-					y = parseInt(x) - 1;
-					if(y===1){
-						document.querySelector("#likes_count").innerText = `${y} Like`
-					}
-					else{
-						document.querySelector("#likes_count").innerText = `${y} Likes`
-					}
-			}
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					document.querySelector('#addLike').disabled = false
-				}
-			};
-			xhttp.open("POST", "/like/", true);
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-			xhttp.send("question={{ question.url }}&user={{ request.user.username }}");
 		}
+	})
 </script>
 {% endblock %}

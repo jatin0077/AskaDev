@@ -4,7 +4,7 @@ from django.conf import settings
 from django.views.static import serve
 urlpatterns = [
     path('<slug:user>/questions/<slug:question>/', views.QuestionDetailView, name='question_detail'),
-    path('questions/create', views.QuestionCreateView.as_view(), name='create_question'),
+    path('questions/create/', views.QuestionCreateView.as_view(), name='create_question'),
     path('answer/<slug:question>/', views.AnswerCreateView.as_view(),name='answer'),
     path('trending/questions/', views.TrendingQuestionView.as_view(), name='trending'),
 	path('like/', views.likePost, name='like_question'),

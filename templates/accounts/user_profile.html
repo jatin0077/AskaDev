@@ -50,8 +50,8 @@
 	.active-pp{
 		width: 14px;
 		height: 14px;
-		margin-top: -4px;
-		margin-left: -14px;
+		margin-top: -2px;
+		margin-left: -15px;
 		border-radius: 50%;
 		position: absolute;
 		background-color: #11e743;
@@ -61,8 +61,8 @@
 <div class="container">
 		<h4 id="profile_picture" style="
 		display: inline-block;">
-			<img  style="width: 50px;height: 50px;border-radius: 14px;" 
-			src="/media/{{profile.profile_picture}}" 
+			<img  style="width: 50px;height: 50px;border-radius: 16px;" 
+			src="{{profile.profile_picture.url}}" 
 			class="img-fluid propicture">
 			<div class="active-pp">&nbsp;</div>
 			<span class="ml-4">{{ profile.user }}</span></h4>
@@ -95,9 +95,9 @@
 		<br/>
 		<table class="table text-center">
 			<thead>
-				<th style="width: 33vw;">Questions Asked</th>
-				<th style="width: 33vw;"><span id="followers">Followers</span></th>
-				<th style="width: 33vw;"><span id="following">Following</span></th>
+				<th style="width: 33vw;"class="text-center" >Questions Asked</th>
+				<th style="width: 33vw;"class="text-center" ><span id="followers">Followers</span></th>
+				<th style="width: 33vw;"class="text-center" ><span id="following">Following</span></th>
 			</thead>
 			<tr class="col">
 				<td>{{questions.count}}</td>
@@ -126,36 +126,37 @@
 </div>
 <script type="text/javascript">
 	var following = {{following}};
-	const follow_btn = document.getElementsByTagName('BUTTON')[1];
+	var follow_btn = document.getElementsByTagName('BUTTON')[1];
 	var init_text = "{{text}}"
-	const followers = document.querySelector('#followers_count');
+	var followers = document.querySelector('#followers_count');
 	function checkFollowing(){
 		if(following){
-			const x = document.querySelector('.following-btn');
-			x.onclick = () =>{
-				x.classList.add('follow-btn')
-	    		x.classList.remove('following-btn')
-				x.innerText = "Follow"
-				following = false;
-				followers.innerText = parseInt(followers.innerText)-1;
-				checkFollowing();	
-				var xhttp = new XMLHttpRequest();
-				xhttp.open("GET", "/unfollow/{{profile.user}}", true);
-				xhttp.send();
-			}
+		var x = document.querySelector('.following-btn');
+		x.onclick = function(){
+		x.classList.add('follow-btn')
+	    x.classList.remove('following-btn')
+	    x.innerText = "Follow"
+	    following = false;
+	    followers.innerText = parseInt(followers.innerText)-1;
+	    checkFollowing();
+	    	
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "/unfollow/{{profile.user}}", true);
+		xhttp.send();
 		}
-		else{
-			const x = document.querySelector('.follow-btn');
+	}
+	else{
+			var x = document.querySelector('.follow-btn');
 			x.onclick = function(){
-			x.classList.add('following-btn')
-			x.classList.remove('follow-btn')
-			x.innerText = "Following"
-			following = true;
-			followers.innerText = parseInt(followers.innerText)+1;
-			checkFollowing();
+				x.classList.add('following-btn')
+		      	x.classList.remove('follow-btn')
+		      	x.innerText = "Following"
+		      	following = true;
+		      	followers.innerText = parseInt(followers.innerText)+1;
+		      	checkFollowing();
 			var xhttp = new XMLHttpRequest();
-			xhttp.open("GET", "/follow/{{profile.user}}", true);
-			xhttp.send();
+		xhttp.open("GET", "/follow/{{profile.user}}", true);
+		xhttp.send();
 		}
 	}	
 	}
@@ -167,10 +168,11 @@
 	      	x.innerText = "Follow"
 	      	followers.innerText = parseInt(followers.innerText)-1;
 	      	following = false
-	      	checkFollowing()	
-			var xhttp = new XMLHttpRequest();
-			xhttp.open("GET", "/unfollow/{{profile.user}}", true);
-			xhttp.send();
+	      	checkFollowing()
+	    	
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("GET", "/unfollow/{{profile.user}}", true);
+		xhttp.send();
 		}
 		}
 		else{

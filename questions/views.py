@@ -6,7 +6,7 @@ from accounts.models import UserProfile
 from .models import Question, Answer, Liker, AnswerLiker
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-import secrets
+import secrets, json
 
 @csrf_exempt
 def likeAnswer(request):
@@ -39,8 +39,12 @@ def likeAnswer(request):
 @csrf_exempt
 def likePost(request):
 	if request.method == 'POST':
-		post = request.POST.get('question')
-		user = request.POST.get('user')
+		js = json.loads(request.body.decode("utf-8"))
+		post = js['question']
+		user = js['user']
+		print(js)
+		print(user)
+		print(post)
 		liked = Liker.objects.filter(
 			user=User.objects.get(username=user),
 			question=Question.objects.get(url=post)
@@ -94,6 +98,7 @@ class QuestionCreateView(CreateView):
 			user=User.objects.get(username=self.request.user.username),
 			title=form.cleaned_data.get('title'),
 			question=form.cleaned_data.get('question'),
+			url=secrets.token_hex(20)
 		)
 		q.save()
 		for i in tags.iterator():
