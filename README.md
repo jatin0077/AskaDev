@@ -16,7 +16,7 @@
 
 ### Technologies Used	:computer:
 - HTML
-- CSS and Bootstrap
+- CSS and Bootstrap(We are replacing Bootstrap with Vuesax)
 - JavaScript and jQuery + select2 at some places
 - Django(Python)
 - [Twemoji](https://twemoji.twitter.com/) For Emoji Rendering
