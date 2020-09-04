@@ -16,7 +16,7 @@ class Question(models.Model):
 	title = models.CharField(max_length=100)
 	question = models.TextField()
 	tags = models.ManyToManyField(Tags)
-	url = models.CharField(max_length=32, default=secrets.token_hex(20))
+	url = models.CharField(max_length=32)
 	asked_on = models.DateTimeField(default=timezone.now)
 	answers = models.IntegerField(default=0)
 	likes = models.IntegerField(default=0)

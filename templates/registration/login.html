@@ -35,8 +35,12 @@
 	{% csrf_token %}
 		<h3>Login to <wbr>AskADev &rarr;</h3>
 		{{ form|crispy }}<br/>
-		<button class="vs-button vs-button-danger vs-button-filled btn-block" style="padding: 0;">
-		<vs-button color="danger" type="filled">Submit</vs-button>
+		<button class="vs-button vs-button-danger vs-button-filled btn-block"
+		v-on:click="changeMessage" 
+		style="padding: 0;">
+		<vs-button color="danger" type="filled">
+			[[message]]
+		</vs-button>
 		</button>
 		<p>&nbsp;</p>
 		<h5>
@@ -59,7 +63,20 @@
 		document.querySelector('#id_password').autocomplete = 'off';
 	}
 	const app_login = new Vue({
-		el: '#app_login'
+		delimiters: ['[[', ']]'],
+		el: '#app_login',
+		data: {
+			message: 'Login'
+		},
+		methods: {
+			changeMessage: function(){
+				let uname = document.querySelector("#id_username").value;
+				let passwd = document.querySelector("#id_password").value;
+				if (uname!=='' && passwd !== ''){
+				setTimeout(()=>this.message = "Logging In", 250)
+			}
+			}
+		}
 	})
 </script>
 </body>
