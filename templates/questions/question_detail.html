@@ -16,7 +16,10 @@
 <div class="container">
     <h6 style="font-size: 28px;">{{ question.title }}<br/><span style="font-size: 20px;">
 		Asked by 
-		<vs-button size="small" line-origin="left" type="line">
+		<vs-button href="/{{question.user}}" 
+		size="small" line-origin="left" type="line"
+		v-bind:style="{fontSize: '16px', fontWeight: '700'}"
+		v-on:focus="function(e){e.style.outline='none'}">
 			{{ question.user }}
 		</vs-button>on 
         {{ question.asked_on }}</span>
