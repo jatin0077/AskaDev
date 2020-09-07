@@ -175,12 +175,12 @@ class UserProfileUpdateView(UpdateView):
 				bio="",
 				website=None,
 				experience=1,	
-				profile_picture=f'static/images/profile_picture/default.png'			
+				profile_picture=f'static/images/profile_picture/default.jpg'			
 			)
 			up.save()
 			up.languages.add(ProgrammingLanguage.objects.get(language='C'))
-			up.follows.add(UserProfile.objects.get(user=User.objects.get(username='Dev')))
-			admin = UserProfile.objects.get(user=User.objects.get(username='Dev'))
+			up.follows.add(UserProfile.objects.get(user=User.objects.get(username='Dev-Mehta')))
+			admin = UserProfile.objects.get(user=User.objects.get(username='Dev-Mehta'))
 			up.save()
 			admin.followers.add(up)
 			admin.save()
