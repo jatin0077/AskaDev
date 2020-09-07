@@ -2,11 +2,16 @@
 {% load crispy_forms_tags %}
 {% block body %}
 <center>
+<div id="app_question_create">
 <form method="POST" style="max-width: 800px;">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" class="btn btn-danger btn-block" value="Ask Question"> 
+    <button type="submit"
+    class="vs-component vs-button vs-button-danger vs-button-filled btn-block">
+        Ask a Question
+    </button>
 </form>
+</div>
 </center>
 {% endblock %}
 {% block script %}
@@ -14,5 +19,8 @@
     $(document).ready(function(){
         $('#id_tags').select2();
     });
+    var app_question_create = new Vue({
+        el: '#app_question_create'
+    })
 </script>
 {% endblock %}

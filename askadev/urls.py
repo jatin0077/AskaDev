@@ -20,6 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('', include('django.contrib.auth.urls')),
-    path('', include('questions.urls'))
+    path('', include('questions.urls')),
+	path('api/', include('api.urls')),
 ]
 urlpatterns += staticfiles_urlpatterns()

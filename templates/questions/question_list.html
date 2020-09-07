@@ -23,7 +23,7 @@
 				{% for t in i.tags.all %}
 					<vs-chip color="{{ t.bg_color }}">{{t.tag}}</vs-chip>
 				{% empty %}
-				<div class="badge badge-pill badge-dark">no tags</div>
+				<div class="badge badge-pill badge-dark">No tags</div>
 				{% endfor %}
 			</p>
 		</div>

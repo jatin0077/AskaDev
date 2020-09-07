@@ -21,6 +21,9 @@ class ProgrammingLanguage(models.Model):
 	def __str__(self):
 		return self.language
 
+	class Meta:
+		ordering = ['language']
+
 class UserProfile(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	bio = models.TextField(max_length=200, help_text='A Short Bio about yourself')
@@ -37,3 +40,4 @@ class UserProfile(models.Model):
 		# new_image = compress(self.profile_picture)
 		# self.profile_picture = new_image
 		# super().save(*args, **kwargs)
+	

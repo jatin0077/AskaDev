@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
 import os
 import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -23,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '$ci^)v=2sk3z)+#mb@#!_%79n=)1$yfc%!^epjsmbzzqo+d+_3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,7 +40,9 @@ INSTALLED_APPS = [
     'questions',
     'crispy_forms',
 	'smartfields',
-	'markdown_deux'
+	'markdown_deux',
+	'rest_framework',
+	'api'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 # django_heroku.settings(locals())
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'api.serializers.PrettyJSONRender',
+    ]
+}
