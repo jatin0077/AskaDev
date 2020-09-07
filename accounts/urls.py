@@ -12,4 +12,4 @@ urlpatterns = [
     path('follow/<slug:user>', login_required(views.followUser), name='follow'),
     path('unfollow/<slug:user>', login_required(views.unfollowUser), name='unfollow'),
 	path('trending/developers/', views.TopDevelopers.as_view(), name='top_dev'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

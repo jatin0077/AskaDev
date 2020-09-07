@@ -122,15 +122,26 @@
 
 <hr style="border: 1px solid var(--red);margin-top: 3px;">
 <div class="container">
+	{% if sameUser %}
+	<h3>Your Questions</h3>
+	{% else %}
 	<h3>{{profile.user}}'s Questions</h3>
-		{% for q in questions %}
+	{%  endif %}
+	{% for q in questions %}
 		<vs-row vs-justify="center">
 			<vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
 			  <vs-card actionable class="cardx">
 				<div slot="header">
 				  <h3>
 					{{q.title}}
-				  </h3>
+				  </h3>		  
+				  <p>
+					{% for t in q.tags.all %}
+						<vs-chip color="{{ t.bg_color }}">{{t.tag}}</vs-chip>
+					{% empty %}
+					<div class="badge badge-pill badge-dark">no tags</div>
+					{% endfor %}
+				</p>
 				</div>
 				<div slot="footer">
 				  <vs-row vs-justify="flex-end">
