@@ -24,7 +24,7 @@
 		}
 		@media only screen and (max-width: 991px) {
 		  	#navbarNav{
-		  		text-align: center;	
+		  		text-align: center;
 		  	}
 		  	.btn-login{
 		  		margin:auto;
@@ -57,12 +57,12 @@
 			border-radius: 8px;
 			border: 2px solid #fff;
 			text-align: center;
-			transition: 0.3s;	
+			transition: 0.3s;
 		}
 		.btn-login:hover{
 			background: #fff; color: var(--red);
 			border: 2px solid var(--red);
-			box-shadow: 0px 0px 0px 2px #dc3545a6, 
+			box-shadow: 0px 0px 0px 2px #dc3545a6,
 						0px 0px 0px 4px #dc354559;
 		}
 		.navbar-toggler:focus{ outline: 0; }
@@ -98,13 +98,13 @@
 	      <ul class="navbar-nav">
 	        <li class="nav-item mr-3">
 	          <a href="{% url 'trending' %}" class="nav-link"><b>Trending Questions</b></a>
-	        </li>        
+	        </li>
 	        <li class="nav-item mr-3">
 	          <a class="nav-link" href="/{{request.user}}"><b>My Profile</b></a>
 	        </li>
 	        <li class="nav-item">
 	         <vs-row vs-align="center" vs-type="flex" vs-justify="space-around">
-					<vs-col vs-type="flex" vs-justify="center" vs-align="center">	
+					<vs-col vs-type="flex" vs-justify="center" vs-align="center">
 					<vs-button color="danger" type="filled" icon="add" href="/questions/create/">
 						Ask a Question
 					</vs-button>
@@ -141,18 +141,18 @@
 	      <ul class="navbar-nav">
 	        <li class="nav-item">
 				<vs-row vs-align="center" vs-type="flex" vs-justify="space-around">
-					<vs-col vs-type="flex" vs-justify="center" vs-align="center">	
+					<vs-col vs-type="flex" vs-justify="center" vs-align="center">
 					<vs-button color="danger" type="filled" icon="login" href="/login/">
-						&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;	
+						&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;
 					</vs-button>
 					</vs-col>
 				</vs-row>
 			</li>
 	        <li class="nav-item">
 				<vs-row vs-align="center" vs-type="flex" vs-justify="space-around">
-					<vs-col vs-type="flex" vs-justify="center" vs-align="center">	
+					<vs-col vs-type="flex" vs-justify="center" vs-align="center">
 					<vs-button color="danger" type="flat" icon="person_add" href="/register/">
-						Register	
+						Register
 					</vs-button>
 					</vs-col>
 				</vs-row>
@@ -165,16 +165,16 @@
 	{% endif %}
 	<div class="container">
 	{% block body %}
-    
+
 	{% endblock body %}
 	</div>
-<script src="/js/vue.min.js"></script>
-<script src="/js/vuesax.umd.min.js"></script>
-<script src="/js/axios.min.js"></script>
-<script src="/js/jquery-3.5.1.slim.min.js"></script>
-<script src="/js/popper.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/select2.min.js"></script>
+<script src="/static/js/vue.min.js"></script>
+<script src="/static/js/vuesax.umd.min.js"></script>
+<script src="/static/js/axios.min.js"></script>
+<script src="/static/js/jquery-3.5.1.slim.min.js"></script>
+<script src="/static/js/popper.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/select2.min.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule="" src="https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.js"></script>
 <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
