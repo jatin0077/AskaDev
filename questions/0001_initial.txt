@@ -1,0 +1,21 @@
+-- Create model AnswerLiker
+--
+CREATE TABLE "questions_answerliker" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "liked" bool NOT NULL, "answer_id" integer NOT NULL REFERENCES "questions_answer" ("id") DEFERRABLE INITIALLY DEFERRED, "user_id" integer NOT NULL REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED);
+--
+-- Add field question to answer
+--
+CREATE TABLE "new__questions_answer" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "answer" text NOT NULL, "url" varchar(32) NOT NULL, "answered_at" datetime NOT NULL, "likes" integer NOT NULL, "answered_by_id" integer NOT NULL REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED, "question_id" integer NOT NULL REFERENCES "questions_question" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "new__questions_answer" ("id", "answer", "url", "answered_at", "likes", "answered_by_id", "question_id") SELECT "id", "answer", "url", "answered_at", "likes", "answered_by_id", NULL FROM "questions_answer";
+DROP TABLE "questions_answer";
+ALTER TABLE "new__questions_answer" RENAME TO "questions_answer";
+CREATE INDEX "questions_question_user_id_e2ae6bb3" ON "questions_question" ("user_id");
+CREATE UNIQUE INDEX "questions_question_tags_question_id_tags_id_6981ea8f_uniq" ON "questions_question_tags" ("question_id", "tags_id");
+CREATE INDEX "questions_question_tags_question_id_1fab941d" ON "questions_question_tags" ("question_id");
+CREATE INDEX "questions_question_tags_tags_id_4a088ce6" ON "questions_question_tags" ("tags_id");
+CREATE INDEX "questions_liker_question_id_1f990cf6" ON "questions_liker" ("question_id");
+CREATE INDEX "questions_liker_user_id_77b04f18" ON "questions_liker" ("user_id");
+CREATE INDEX "questions_answerliker_answer_id_cd2667b3" ON "questions_answerliker" ("answer_id");
+CREATE INDEX "questions_answerliker_user_id_2c53b8ab" ON "questions_answerliker" ("user_id");
+CREATE INDEX "questions_answer_answered_by_id_77b4660b" ON "questions_answer" ("answered_by_id");
+CREATE INDEX "questions_answer_question_id_45884d67" ON "questions_answer" ("question_id");
+COMMIT;

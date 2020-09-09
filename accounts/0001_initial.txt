@@ -1,0 +1,15 @@
+CREATE TABLE "accounts_userprofile" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "bio" text NOT NULL, "website" varchar(200) NULL, "profile_picture" varchar(255) NOT NULL, "experience" integer unsigned NOT NULL CHECK ("experience" >= 0), "points" integer unsigned NOT NULL CHECK ("points" >= 0), "user_id" integer NOT NULL REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "accounts_userprofile_followers" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "from_userprofile_id" integer NOT NULL REFERENCES "accounts_userprofile" ("id") DEFERRABLE INITIALLY DEFERRED, "to_userprofile_id" integer NOT NULL REFERENCES "accounts_userprofile" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "accounts_userprofile_follows" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "from_userprofile_id" integer NOT NULL REFERENCES "accounts_userprofile" ("id") DEFERRABLE INITIALLY DEFERRED, "to_userprofile_id" integer NOT NULL REFERENCES "accounts_userprofile" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "accounts_userprofile_languages" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "userprofile_id" integer NOT NULL REFERENCES "accounts_userprofile" ("id") DEFERRABLE INITIALLY DEFERRED, "programminglanguage_id" integer NOT NULL REFERENCES "accounts_programminglanguage" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "accounts_userprofile_user_id_92240672" ON "accounts_userprofile" ("user_id");
+CREATE UNIQUE INDEX "accounts_userprofile_followers_from_userprofile_id_to_userprofile_id_b130c53a_uniq" ON "accounts_userprofile_followers" ("from_userprofile_id", "to_userprofile_id");
+CREATE INDEX "accounts_userprofile_followers_from_userprofile_id_31b17455" ON "accounts_userprofile_followers" ("from_userprofile_id");
+CREATE INDEX "accounts_userprofile_followers_to_userprofile_id_0d3e47aa" ON "accounts_userprofile_followers" ("to_userprofile_id");
+CREATE UNIQUE INDEX "accounts_userprofile_follows_from_userprofile_id_to_userprofile_id_96a4afdf_uniq" ON "accounts_userprofile_follows" ("from_userprofile_id", "to_userprofile_id");
+CREATE INDEX "accounts_userprofile_follows_from_userprofile_id_2798b703" ON "accounts_userprofile_follows" ("from_userprofile_id");
+CREATE INDEX "accounts_userprofile_follows_to_userprofile_id_c73d9228" ON "accounts_userprofile_follows" ("to_userprofile_id");
+CREATE UNIQUE INDEX "accounts_userprofile_languages_userprofile_id_programminglanguage_id_212f745c_uniq" ON "accounts_userprofile_languages" ("userprofile_id", "programminglanguage_id");
+CREATE INDEX "accounts_userprofile_languages_userprofile_id_10e33733" ON "accounts_userprofile_languages" ("userprofile_id");
+CREATE INDEX "accounts_userprofile_languages_programminglanguage_id_b0d43b32" ON "accounts_userprofile_languages" ("programminglanguage_id");
+COMMIT;

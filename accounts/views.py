@@ -1,6 +1,7 @@
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View, UpdateView, ListView
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -8,8 +9,7 @@ from .models import UserProfile,ProgrammingLanguage
 from questions.models import Question
 from PIL import Image, ImageOps
 from django.core.files.base import ContentFile
-import base64, secrets, io
-import os
+import base64, secrets, io, os
 class TopDevelopers(ListView):
 	model = UserProfile
 	template_name = 'accounts/top_developers.html'
@@ -23,6 +23,8 @@ class TopDevelopers(ListView):
 	def get_queryset(self, *args, **kwargs):
 		qs = UserProfile.objects.all().order_by('-points').exclude(points=0)
 		return qs
+
+@csrf_exempt
 def followUser(request, user):
 	usr = User.objects.filter(username=user)
 	rusr = User.objects.filter(username=request.user) 
@@ -46,6 +48,7 @@ def followUser(request, user):
 		return HttpResponse("User Does Not Exist")
 	return HttpResponse(ruser.follows.all())
 
+@csrf_exempt
 def unfollowUser(request, user):
 	usr = User.objects.filter(username=user)
 	rusr = User.objects.filter(username=request.user) 
@@ -180,8 +183,8 @@ class UserProfileUpdateView(UpdateView):
 			)
 			up.save()
 			up.languages.add(ProgrammingLanguage.objects.get(language='C'))
-			up.follows.add(UserProfile.objects.get(user=User.objects.get(username='Dev-Mehta')))
-			admin = UserProfile.objects.get(user=User.objects.get(username='Dev-Mehta'))
+			up.follows.add(UserProfile.objects.get(user=User.objects.get(username='AskaDev')))
+			admin = UserProfile.objects.get(user=User.objects.get(username='AskaDev'))
 			up.save()
 			admin.followers.add(up)
 			admin.save()
