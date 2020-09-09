@@ -6,7 +6,15 @@ from accounts.models import UserProfile
 from .models import Question, Answer, Liker, AnswerLiker
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-import secrets, json
+import secrets, json, requests
+
+def gitHubPost(text, mode='markdown'):
+	payload = {'text': text, 'mode':mode}
+	r = requests.post('https://api.github.com/markdown', data=json.dumps(payload))
+	if r.status_code == 200:
+		return r.content
+	else:
+		return None
 
 @csrf_exempt
 def likeAnswer(request):
@@ -94,10 +102,12 @@ class QuestionCreateView(CreateView):
 	def form_valid(self,form):
 		tags = form.cleaned_data.get('tags')
 		user=User.objects.get(username=self.request.user.username)
+		question = form.cleaned_data.get('question')
+		md_question = str(gitHubPost(question).decode('utf-8'))
 		q = Question(
 			user=User.objects.get(username=self.request.user.username),
 			title=form.cleaned_data.get('title'),
-			question=form.cleaned_data.get('question'),
+			question=md_question,
 			url=secrets.token_hex(20)
 		)
 		q.save()

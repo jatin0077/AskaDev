@@ -90,7 +90,7 @@ class HomePage(TemplateView):
 		context = super(HomePage, self).get_context_data(*args,**kwargs)
 		if self.request.user.is_authenticated:
 			user = User.objects.get(username=self.request.user.username)
-			qs = Question.objects.filter(user=user)
+			qs = Question.objects.filter(user=user).order_by('-asked_on')
 			context['q_list'] = qs
 		return context
 def register(request):
@@ -111,6 +111,7 @@ def register(request):
 class UserProfileView(View):
 	template_name = 'accounts/user_profile.html'
 	def get(self,request, uname, *args, **kwargs):
+		get_object_or_404(User, username=uname)
 		u = UserProfile.objects.filter(
 			user=User.objects.get(username=uname)
 		)

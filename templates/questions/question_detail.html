@@ -57,10 +57,8 @@
 				  Question
 			  </h3>
 			</div>
-			<div>
-				{% markdown %}
-{{question.question|safe}}
-				{% endmarkdown %}
+			<div class="markdown-body">
+			{{question.question|safe}}
 			</div>
 			<div slot="footer">
 			  <vs-row vs-justify="flex-end">
