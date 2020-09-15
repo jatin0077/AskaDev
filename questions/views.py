@@ -87,12 +87,15 @@ def likePost(request):
 def QuestionDetailView(request, user, question):
 	user = get_object_or_404(User, username=user)
 	question = get_object_or_404(Question,user=user, url=question)
+	user = question.user
+	user_profile = UserProfile.objects.get(user=user)
 	context = {"user":user, "question":question}
 	answers = Answer.objects.filter(question=question).order_by('-answered_at')
 	context['answers'] = answers
 	liked = Liker.objects.filter(user=User.objects.get(username=request.user),question=question).exists()
 	print(liked)
 	context['liked'] = liked
+	context['user_profile'] = user_profile.profile_picture.url
 	return render(request, "questions/question_detail.html",context=context )
 
 class QuestionCreateView(CreateView):

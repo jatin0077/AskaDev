@@ -86,7 +86,7 @@
 		<div class="bio" style="max-width: 400px;">
 		<h6 style="font-size: 24px;margin-top: 1rem">Bio</h6>
 		<span id="bio">
-		{{ profile.bio }}
+		{{ profile.bio | linebreaks }}
 		{% if profile.website %}
 		<a target="_blank" style="margin-top: -20px;position: absolute;" href="{{profile.website}}">{{ profile.website }}</a>
 		{% endif %}
@@ -95,9 +95,10 @@
 		<div class="skills">
 			<p>Languages</p>
 			{% for l in profile.languages.all %}
-			<vs-chip color="{{l.bg_color}}" type="filled">
+			<!-- <vs-chip color="{{l.bg_color}}" type="filled">
 				{{l}}
-			</vs-chip>
+			</vs-chip> -->
+			<div class="badge badge-pill" style="background-color: {{l.bg_color}}; color: #fff;">{{l}}</div>
 			{% endfor %}
 		</div>
 		<br/>
@@ -123,35 +124,26 @@
 	{% else %}
 	<h3>{{profile.user}}'s Questions</h3>
 	{%  endif %}
-	{% for q in questions %}
-		<vs-row vs-justify="center">
-			<vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
-			  <vs-card actionable class="cardx">
-				<div slot="header">
-				  <h3>
-					{{q.title}}
-				  </h3>		  
-				  <p>
-					{% for t in q.tags.all %}
-						<vs-chip color="{{ t.bg_color }}">{{t.tag}}</vs-chip>
-					{% empty %}
-					<div class="badge badge-pill badge-dark">no tags</div>
-					{% endfor %}
-				</p>
-				</div>
-				<div slot="footer">
-				  <vs-row vs-justify="flex-end">
-					<vs-button 
-					href="/{{q.user}}/questions/{{q.url}}/"
-					type="filled" color="danger" icon="read_more">
-						Read More
-					</vs-button>
-				  </vs-row>
-				</div>
-			  </vs-card>
-			</vs-col>
-		  </vs-row>	
-		<br/>
+	{% for i in questions %}
+	<div class="card mx-auto" style="max-width: 1100px;">
+		<div class="card-body">
+		  <h4 class="card-title font-weight-bold">{{i.title}}</h4>
+		  <h4><i class="bx bxs-heart" style="color: rgba(var(--vs-danger));"></i><span style="margin-top: -1.5px;margin-left:3px;position: absolute;">{{i.likes}} Likes</span></h4>
+		  <hr class="my-4">
+		  <p class="lead">
+			  <span style="position: absolute;">By</span>
+			  <vs-button 
+			  href="/{{i.user}}"
+			  :style="{marginTop: '0px',marginLeft: '25px',fontSize: '18px',display: 'inline-block'}" transparent size="mini">
+				<i class="bx bx-user"></i>&nbsp;{{i.user}}
+			</vs-button>
+			<span style="position: absolute;">{{i.asked_on}}</span>
+		</p>
+		<vs-button href="/{{i.user}}/questions/{{i.url}}" :style="{fontSize: '18px'}" size="small">
+			View Question
+		</vs-button>
+		</div>
+	  </div>
 		{% empty %}
 			<h4>No Questions Asked</h4>
 		{% endfor %}

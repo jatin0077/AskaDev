@@ -4,8 +4,9 @@
 <head>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<title>Login</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+	<link href='https://unpkg.com/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+	<link href="https://unpkg.com/vuesax@4.0.1-alpha.16/dist/vuesax.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<style type="text/css">
 		body{
 			display: flex;
@@ -35,10 +36,7 @@
 	{% csrf_token %}
 		<h3>Login to <wbr>AskADev &rarr;</h3>
 		{{ form|crispy }}<br/>
-		<button class="vs-button vs-button-danger vs-button-filled btn-block"
-		v-on:click="changeMessage" 
-		style="padding: 0;">
-		<vs-button color="danger" type="filled">
+		<vs-button danger filled block size="large">
 			[[message]]
 		</vs-button>
 		</button>
@@ -46,8 +44,8 @@
 		<h5>
 			Don't Have an Account?
 		</h5>
-		<h5 style="margin-top: -10px;">
-			<vs-button line-origin="left" href="/register/" color="danger" type="line">
+		<h5 style="margin-top: 0px;">
+			<vs-button href="/register/" danger flat >
 				Register
 			</vs-button>
 		</h5>
@@ -56,7 +54,7 @@
 </center>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
-<script src="https://unpkg.com/vuesax"></script>
+<script src="https://unpkg.com/vuesax@4.0.1-alpha.16/dist/vuesax.min.js"></script>
 <script type="text/javascript">
 	window.onload = function(){
 		document.querySelector('#id_username').autocomplete = 'off';
