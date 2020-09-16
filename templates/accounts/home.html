@@ -1,49 +1,30 @@
 {% extends "base.html" %}
 {% block body %}
 {% if request.user.is_authenticated %}
-<div id="app-home">
+<div id="app-home" >
 	{% for i in q_list %}
-	<vs-row vs-justify="center">
-		<vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
-		  <vs-card actionable class="cardx">
-			<div slot="header">
-			  <h4>
-				  {{i.title}}
-			  </h4>
-			  <h5>You asked this on {{ i.asked_on }}</h5>
-			 <h5>
-				<vs-icon color="danger" icon="favorite"></vs-icon> 
-				<span style="position:absolute;margin-left: 3px;">{{ i.likes }} Likes</span>
-		  	</h5>
-				<p>
-					{% for t in i.tags.all %}
-						<vs-chip color="{{ t.bg_color }}">{{t.tag}}</vs-chip>
-					{% empty %}
-					<div class="badge badge-pill badge-dark">no tags</div>
-					{% endfor %}
-				</p>
-			</div>
-			<div>
-			</div>
-			<div slot="footer">
-			  <vs-row vs-justify="flex-end">
-				<vs-button 
-				color="#54cdfb"
-				gradient-color-secondary="#5252e8"
-				type="gradient"
-				href="/{{i.user}}/questions/{{i.url}}/"
-				>
-					View Question
-				</vs-button>
-			  </vs-row>
-			</div>
-		  </vs-card>
-		</vs-col>
-	  </vs-row>
-	  <p></p>
+	<div class="card mx-auto" style="max-width: 1100px;">
+		<div class="card-body">
+		  <h4 class="card-title font-weight-bold">{{i.title}}</h4>
+		  <h4><i class="bx bxs-heart" style="color: rgba(var(--vs-danger));"></i><span style="margin-top: -1.5px;margin-left:3px;position: absolute;">{{i.likes}} Likes</span></h4>
+		  <hr class="my-4">
+		  <p class="lead">
+			  <span style="position: absolute;">By</span>
+			  <vs-button 
+			  href="/{{i.user}}"
+			  :style="{marginTop: '0px',marginLeft: '25px',fontSize: '18px',display: 'inline-block'}" transparent size="mini">
+				<i class="bx bx-user"></i>&nbsp;{{i.user}}
+			</vs-button>
+			<span style="position: absolute;">on {{i.asked_on.date}}</span>
+		</p>
+		<vs-button href="/{{i.user}}/questions/{{i.url}}" :style="{fontSize: '18px'}" size="small">
+			View Question
+		</vs-button>
+		</div>
+	  </div>
 	{% empty %}
 	<h4>No Question Askeds</h4>
-	<vs-button color="danger" icon="add" type="filled" href="/questions/create">
+	<vs-button danger filled size="large" href="/questions/create">
 		Ask a Question
 	</vs-button>
 	{% endfor %}
@@ -51,25 +32,33 @@
 </div>
 {% else %}
 <div id="app-home">
-<h1>AskaDeveloper 👨‍💻</h1>
+<h2>AskaDeveloper 👨‍💻</h2>
 <h3>Get your questions🤔 answered by Developers</h3>
-<h4>Why AskaDev?</h4>
+<hr>
+<h4 id="why_askadev"><a 
+	style="text-decoration: none;"
+	href="#why_askadev">#</a>  Why AskaDev?</h4>
 <ul>
 	<li>Ask your queries and get solutions from other developers.🤝</li>
 	<li>I hope this may benefit you.🙏</li>
 	<li>This website is only for programmers.👨‍💻</li>
 </ul>
-<h4>It's Still Under Developement</h4>
+<hr>
+<h4 id="under_dev">
+	<a style="text-decoration: none;" href="#under_dev">#</a> 
+	It's Still Under Developement</h4>
 <ul>
 	<li>Got a bug? DM me on instagram.🗨️</li>
 </ul>
-<h4>To Do✍️</h4>
+<hr>
+<h4 id="todo"><a href="#todo" style="text-decoration: none;">#</a>	To Do✍️</h4>
 <ul>
 	<li>Add Likes / Dislikes feature on Answers(AJAX and Django Views)</li>
 	<li>A proper implementation of Top Developers View.(Currently A Developer who answers the most is trending😅)</li>
 	<li>Integrate a WYSIWYG Editor for Question and Answers</li>
 </ul>
-<h4>Technologies Used 💻</h4>
+<hr>
+<h4 id="tech_used"><a href="#tech_used">#</a> Technologies Used 💻</h4>
 <ul>
 	<li>HTML</li>
 	<li>CSS and Bootstrap</li>
@@ -78,24 +67,26 @@
 	<li>Twemoji For Emoji Rendering</li>
 	<li>Converting Images to Base64 URL.</li>
 </ul>
-<h4>Got Any Ideas 💻</h4>
+<hr>
+<h4 id="ideas"><a href="#ideas" style="text-decoration: none;">#</a> Got Any Ideas 💻</h4>
 <ul>
 	<li>DM me on Instagram instagram 🗨️</li>
 	<li>Email me 📧</li>
 </ul>
+<hr>
 <p></p>
 <p></p>
 <div class="text-center  d-flex justify-content-center">
 	<div class="row" style="max-width: 800px;">
 		<vs-row vs-w="12">
 			<vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="6" vs-sm="12" vs-xs="12" >
-				<vs-button color="danger" type="filled" icon="login" href="/login/">
-					Login
+				<vs-button size="large" block danger filled href="/login/">
+					<i class="bx bxs-log-in"></i>&nbsp;Login
 				</vs-button>
 			</vs-col>
 			<vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="6" vs-sm="12" vs-xs="12">
-				<vs-button color="danger" type="flat" icon="person_add" href="/register/">
-					Register	
+				<vs-button danger transparent href="/register/" block size="large">
+					<i class='bx bx-user-plus'></i>&nbsp;Register	
 				</vs-button>	
 			</vs-col>
 		  </vs-row>

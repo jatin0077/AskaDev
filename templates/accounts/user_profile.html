@@ -4,21 +4,21 @@
 <style type="text/css">
 	.follow-btn, .follow-btn:focus{
 		background: white;
-		border: 2px solid var(--red);
-		color: var(--red);
+		border: 2px solid rgba(var(--vs-danger));
+		color: rgba(var(--vs-danger));
 		padding: 4.5px 16px;
 		border-radius: 8px;
 		transition: 0.3s;
 		outline: 0;
 	}
 	.follow-btn:hover{
-		background: var(--red);
+		background: rgba(var(--vs-danger));
 		color: white;
 		text-decoration: none;
 	}
 	.following-btn, .following-btn:focus{
-		background: var(--red);
-		border: 2px solid var(--red);
+		background: rgba(var(--vs-danger));
+		border: 2px solid rgba(var(--vs-danger));
 		color: white;
 		padding: 4.5px 16px;
 		border-radius: 8px;
@@ -27,7 +27,7 @@
 	}
 	.following-btn:hover{
 		background: white;
-		color: var(--red);
+		color: rgba(var(--vs-danger));
 		text-decoration: none;
 	}
 	.table thead th, .table td{
@@ -80,17 +80,13 @@
 					[[message]]
 				</vs-button>	
 			{% else %}
-					{% if canFollow %}
-					<button class="follow-btn">{{text}}</button>
-					{% else %}
-					<button class="following-btn">{{text}}</button>
-				{% endif %}    	
+					<button v-bind:class="this.class" @click="followUser" id="follow_btn">[[follow_message]]</button>    	
 			{% endif %}
 		</span>
 		<div class="bio" style="max-width: 400px;">
 		<h6 style="font-size: 24px;margin-top: 1rem">Bio</h6>
 		<span id="bio">
-		{{ profile.bio|linebreaks }}
+		{{ profile.bio | linebreaks }}
 		{% if profile.website %}
 		<a target="_blank" style="margin-top: -20px;position: absolute;" href="{{profile.website}}">{{ profile.website }}</a>
 		{% endif %}
@@ -99,9 +95,10 @@
 		<div class="skills">
 			<p>Languages</p>
 			{% for l in profile.languages.all %}
-			<vs-chip color="{{l.bg_color}}" type="filled">
+			<!-- <vs-chip color="{{l.bg_color}}" type="filled">
 				{{l}}
-			</vs-chip>
+			</vs-chip> -->
+			<div class="badge badge-pill" style="background-color: {{l.bg_color}}; color: #fff;">{{l}}</div>
 			{% endfor %}
 		</div>
 		<br/>
@@ -127,105 +124,32 @@
 	{% else %}
 	<h3>{{profile.user}}'s Questions</h3>
 	{%  endif %}
-	{% for q in questions %}
-		<vs-row vs-justify="center">
-			<vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
-			  <vs-card actionable class="cardx">
-				<div slot="header">
-				  <h3>
-					{{q.title}}
-				  </h3>		  
-				  <p>
-					{% for t in q.tags.all %}
-						<vs-chip color="{{ t.bg_color }}">{{t.tag}}</vs-chip>
-					{% empty %}
-					<div class="badge badge-pill badge-dark">no tags</div>
-					{% endfor %}
-				</p>
-				</div>
-				<div slot="footer">
-				  <vs-row vs-justify="flex-end">
-					<vs-button 
-					href="/{{q.user}}/questions/{{q.url}}/"
-					type="filled" color="danger" icon="read_more">
-						Read More
-					</vs-button>
-				  </vs-row>
-				</div>
-			  </vs-card>
-			</vs-col>
-		  </vs-row>	
-		<br/>
+	{% for i in questions %}
+	<div class="card mx-auto" style="max-width: 1100px;">
+		<div class="card-body">
+		  <h4 class="card-title font-weight-bold">{{i.title}}</h4>
+		  <h4><i class="bx bxs-heart" style="color: rgba(var(--vs-danger));"></i><span style="margin-top: -1.5px;margin-left:3px;position: absolute;">{{i.likes}} Likes</span></h4>
+		  <hr class="my-4">
+		  <p class="lead">
+			  <span style="position: absolute;">By</span>
+			  <vs-button 
+			  href="/{{i.user}}"
+			  :style="{marginTop: '0px',marginLeft: '25px',fontSize: '18px',display: 'inline-block'}" transparent size="mini">
+				<i class="bx bx-user"></i>&nbsp;{{i.user}}
+			</vs-button>
+			<span style="position: absolute;">{{i.asked_on}}</span>
+		</p>
+		<vs-button href="/{{i.user}}/questions/{{i.url}}" :style="{fontSize: '18px'}" size="small">
+			View Question
+		</vs-button>
+		</div>
+	  </div>
 		{% empty %}
 			<h4>No Questions Asked</h4>
 		{% endfor %}
 </div>
 </div>
 <script type="text/javascript">
-	var following = {{following}};
-	var follow_btn = document.getElementsByTagName('BUTTON')[1];
-	var init_text = "{{text}}"
-	var followers = document.querySelector('#followers_count');
-	function checkFollowing(){
-		if(following){
-		var x = document.querySelector('.following-btn');
-		x.onclick = function(){
-		x.classList.add('follow-btn')
-	    x.classList.remove('following-btn')
-	    x.innerText = "Follow"
-	    following = false;
-	    followers.innerText = parseInt(followers.innerText)-1;
-	    checkFollowing();
-	    	
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "/unfollow/{{profile.user}}", true);
-		xhttp.send();
-		}
-	}
-	else{
-			var x = document.querySelector('.follow-btn');
-			x.onclick = function(){
-				x.classList.add('following-btn')
-		      	x.classList.remove('follow-btn')
-		      	x.innerText = "Following"
-		      	following = true;
-		      	followers.innerText = parseInt(followers.innerText)+1;
-		      	checkFollowing();
-			var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "/follow/{{profile.user}}", true);
-		xhttp.send();
-		}
-	}	
-	}
-	if(following){
-		var x = document.querySelector('.following-btn');
-		x.onclick = function(){
-			x.classList.add('follow-btn')
-	      	x.classList.remove('following-btn')
-	      	x.innerText = "Follow"
-	      	followers.innerText = parseInt(followers.innerText)-1;
-	      	following = false
-	      	checkFollowing()
-	    	
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "/unfollow/{{profile.user}}", true);
-		xhttp.send();
-		}
-		}
-		else{
-			var x = document.querySelector('.follow-btn');
-			x.onclick = function(){
-				x.classList.add('following-btn')
-		      	x.classList.remove('follow-btn')
-		      	x.innerText = "Following"
-		      	following = true
-		      	followers.innerText = parseInt(followers.innerText)+1;
-		      	checkFollowing()
-			var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "/follow/{{profile.user}}", true);
-		xhttp.send();
-		}
-	}
 </script>
 {% endblock %}
 {% block script %}
@@ -234,8 +158,70 @@ const app_profile = new Vue({
 	el: '#app_profile',
 	delimiters: ['[[',']]'],
 	data: {
-		'message': 'Edit Profile'
+		'message': 'Edit Profile',
+		'following' : {{following}},
+		'follow_message': "",
+		'class': "",
+		'follow_btn':document.querySelector('#follow_btn')
+	},
+	methods: {
+		followUser: function(){
+			if(this.following){
+				// Unfollow
+				this.follow_btn.disabled = true;
+				axios.post(
+					"/unfollow/{{profile.user}}",
+					{"user":"{{profile.user}}"}
+				).then((res) =>{
+					var f_count = document.querySelector('#followers_count');
+					f_count.innerText = parseInt(f_count.innerText) - 1;
+					document.querySelector('#follow_btn').disabled = false;
+				}).then((err) => {
+					if (err !== undefined)alert(err);
+				})
+				this.following = false;
+				this.follow_message = "Follow"
+				this.class = "follow-btn"
+			}
+			else{
+				document.querySelector("#follow_btn").disabled = true;
+				axios.post(
+					"/follow/{{profile.user}}",
+					{"user":"{{profile.user}}"}
+				).then((res) =>{
+					var f_count = document.querySelector('#followers_count');
+					f_count.innerText = parseInt(f_count.innerText) + 1;
+					document.querySelector('#follow_btn').disabled = false;
+				}).then((err)=>{
+					if(err !== undefined) alert(err);
+				})
+				this.following = true;
+				this.follow_message = "Following"
+				this.class = 'following-btn'
+			}
+		}
 	}
 })
+window.onload =  function(){
+	let following = {{following}};
+	if(following){
+		app_profile.follow_message = "Following";
+		app_profile.class = "following-btn";
+	}
+	else{
+		app_profile.follow_message = "Follow"
+		app_profile.class = "follow-btn"
+	}
+	twemoji.parse(document.body);
+		var x = document.querySelectorAll('.emoji');
+		for(let i=0;i<x.length;i++){
+			const y = x[i];
+			y.style.width = "1em"
+			y.style.marginLeft = "3px";
+			var str = y.src;
+  			var res = str.replace("https://twemoji.maxcdn.com/v/13.0.1/72x72/", "https://github.githubassets.com/images/icons/emoji/unicode/");
+			y.src = res;
+		}
+}
 </script>
 {% endblock %}

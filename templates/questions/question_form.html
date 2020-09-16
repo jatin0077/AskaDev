@@ -7,8 +7,8 @@
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit"
-    class="vs-component vs-button vs-button-danger vs-button-filled btn-block">
-        Ask a Question
+    class="vs-button vs-button--false vs-button--size-small btn-block" style="background:rgba(var(--vs-danger));color:#fff;font-size: 18px;">
+        <div class="vs-button__content">Ask a Question</div>
     </button>
 </form>
 </div>

@@ -2,50 +2,25 @@
 {% block body %}
 <div id="app-trending">
 {% for i in object_list %}
-<vs-row vs-justify="center">
-	<vs-col type="flex" vs-justify="center" vs-align="center" vs-w="12">
-	  <vs-card actionable class="cardx">
-		<div slot="header">
-		  <h4>
-			  {{i.title}}
-		  </h4>
-		  <h5>Asked by
-			  <vs-button href="/{{i.user}}" size="small" type="line" line-origin="left">
-				  {{ i.user }} 
-				</vs-button>
-				on {{ i.asked_on }}
-		</h5>
-		 <h5>
-			<vs-icon color="danger" icon="favorite"></vs-icon> 
-			<span style="position:absolute;margin-left: 3px;">{{ i.likes }} Likes</span>
-		  </h5>
-			<p>
-				{% for t in i.tags.all %}
-					<vs-chip color="{{ t.bg_color }}">{{t.tag}}</vs-chip>
-				{% empty %}
-				<div class="badge badge-pill badge-dark">No tags</div>
-				{% endfor %}
-			</p>
-		</div>
-		<div>
-		</div>
-		<div slot="footer">
-		  <vs-row vs-justify="flex-end">
-			<vs-button 
-			color="#54cdfb"
-			gradient-color-secondary="#5252e8"
-			type="gradient"
-			href="/{{i.user}}/questions/{{i.url}}/"
-			>
-				View Question
-			</vs-button>
-		  </vs-row>
-		</div>
-	  </vs-card>
-	</vs-col>
-  </vs-row>
-  <p></p>
-{% empty %}
+<div class="card mx-auto" style="max-width: 1100px;">
+	<div class="card-body">
+	  <h4 class="card-title font-weight-bold">{{i.title}}</h4>
+	  <h4><i class="bx bxs-heart" style="color: rgba(var(--vs-danger));"></i><span style="margin-top: -1.5px;margin-left:3px;position: absolute;">{{i.likes}} Likes</span></h4>
+	  <hr class="my-4">
+	  <p class="lead">
+		  <span style="position: absolute;">By</span>
+		  <vs-button 
+		  href="/{{i.user}}"
+		  :style="{marginTop: '0px',marginLeft: '25px',fontSize: '18px',display: 'inline-block'}" transparent size="mini">
+			<i class="bx bx-user"></i>&nbsp;{{i.user}}
+		</vs-button>
+		<span style="position: absolute;">{{i.asked_on.date}}</span>
+	</p>
+	<vs-button href="/{{i.user}}/questions/{{i.url}}" :style="{fontSize: '18px'}" size="small">
+		View Question
+	</vs-button>
+	</div>
+  </div>{% empty %}
 <h4>No Questions Asked</h4>
 <h5>Ask a Question now to get it trending</h5>
 <vs-button color="danger" icon="add" type="filled" href="/questions/create">
