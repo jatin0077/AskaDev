@@ -207,10 +207,21 @@
 <script nomodule="" src="https://unpkg.com/ionicons@5.1.2/dist/ionicons/ionicons.js"></script>
 <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 <script>
-	new Vue({
+	const base_app = new Vue({
 		delimiters: ['[[', ']]'],
 		el: '#app',
-	})
+		mounted(){
+		const loading = this.$vs.loading({
+					type: 'scale',
+					color: 'primary'
+		})
+		document.onreadystatechange = () => {
+			if(document.readyState === "complete"){
+				loading.close();
+			}
+		}
+	}
+})
 	window.onload = function(){
 		twemoji.parse(document.body);
 		var x = document.querySelectorAll('.emoji');

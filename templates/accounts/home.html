@@ -112,8 +112,54 @@
 {% endif %}
 {% endblock body %}
 {% block script %}
+{% if first_login %}
 <script>
-const app_home = new Vue({
+	const app_home = new Vue({
+	el: '#app-home',
+	data: {
+		width: '100px',
+	},
+	delimitors: ['[[', ']]'],
+	mounted(){
+		const noti = this.$vs.notification({
+			sticky: true,
+			width: 'auto',
+			duration: 'none',
+			position: 'bottom-center',
+			color: '#7d33ff',
+			icon: `<img 
+						draggable="false"
+						style="width: 1.4rem"
+						alt="👋"
+						src="https://github.githubassets.com/images/icons/emoji/unicode/1f44b.png">`,
+			title: `<p style="font-size:16px;">
+					Welcome to AskaDeveloper</p>
+					<hr style="border-top: 1px solid #fff">`,
+			text: `
+			<p style="font-size: 14px;">
+					Here you can get answers of your questions.<br/><br/>
+					From the top navbar select Ask a Question Button to ask a question.
+					You can view trending questions from trending questions page.<br/><br/>
+					We  are constantly working to improve this website. You can find more
+					about this project on our github repository<br/><br/>
+					<a href="https://github.com/Dev-Mehta/AskaDev" 
+						target="_blank"
+						style="color: #fff; text-decoration: none;">
+						<i class='bx bxl-github'></i>
+					</a>
+					<a href="https://instagram.com/djangostaan" 
+						target="_blank"
+						style="color: #fff; text-decoration: none;">
+						<i class='bx bxl-instagram'></i>
+					</a>
+			</p>`
+		  })
+	}
+});
+</script>
+{% else %}
+<script>
+	const app_home = new Vue({
 	el: '#app-home',
 	data: {
 		width: '100px',
@@ -121,4 +167,6 @@ const app_home = new Vue({
 	delimitors: ['[[', ']]'],
 });
 </script>
+{% endif %}
+
 {% endblock %}

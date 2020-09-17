@@ -9,7 +9,8 @@ from .models import UserProfile,ProgrammingLanguage
 from questions.models import Question
 from PIL import Image, ImageOps
 from django.core.files.base import ContentFile
-import base64, secrets, io, os
+import base64, secrets, io, os, datetime
+
 class TopDevelopers(ListView):
 	model = UserProfile
 	template_name = 'accounts/top_developers.html'
@@ -95,6 +96,11 @@ class HomePage(TemplateView):
 			user = User.objects.get(username=self.request.user.username)
 			qs = Question.objects.filter(user=user).order_by('-asked_on')
 			context['q_list'] = qs
+			last_login = user.last_login
+			date_joined = user.date_joined
+			check_last_login = last_login - date_joined
+			if check_last_login < datetime.timedelta(seconds=10):
+				context['first_login'] = True
 		return context
 def register(request):
     if request.method == 'POST':
