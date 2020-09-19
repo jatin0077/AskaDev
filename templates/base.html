@@ -210,14 +210,14 @@
 	const base_app = new Vue({
 		delimiters: ['[[', ']]'],
 		el: '#app',
-    })
-document.onreadystatechange = () => {
-    const loading = base_app.$vs.loading({
+	})
+const loading = base_app.$vs.loading({
 					type: 'scale',
 					color: 'primary'
-	})
-	if(document.readyState == "complete"){
-		loading.close();
+})
+document.onreadystatechange = () => {
+	if(document.readyState == 'complete'){
+		loading.close()
 	}
 }
 	window.onload = function(){
