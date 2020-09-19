@@ -210,18 +210,16 @@
 	const base_app = new Vue({
 		delimiters: ['[[', ']]'],
 		el: '#app',
-		mounted(){
-		const loading = this.$vs.loading({
+    })
+document.onreadystatechange = () => {
+    const loading = base_app.$vs.loading({
 					type: 'scale',
 					color: 'primary'
-		})
-		document.onreadystatechange = () => {
-			if(document.readyState === "complete"){
-				loading.close();
-			}
-		}
+	})
+	if(document.readyState == "complete"){
+		loading.close();
 	}
-})
+}
 	window.onload = function(){
 		twemoji.parse(document.body);
 		var x = document.querySelectorAll('.emoji');
