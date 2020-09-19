@@ -11,6 +11,9 @@
 		position: relative;
 		margin-left: 20px;
 	}
+	.highlight{
+		font-weight: 400;
+	}
 </style>
 <div id="app_detail">
 <div class="container">
@@ -71,13 +74,16 @@
     </div>
     </div>
 </div>
+{% ifnotequal question.url "50397e64a39023ad47ac34c61ae192f0" %}
 <div class="container">
-    <br/>
+	<br/>
     <h3>Answers</h3>
     {% for a in answers %}  
     <div class="card">
-        <div class="card-body" style="padding: 0.75rem;">
-            <p>{{a.answer|safe|linebreaks}}</p>
+		<div class="card-body" style="padding: 0.75rem;">
+			<div class="markdown-body">
+				{{a.answer|safe|linebreaks}}
+			</div>
         </div>
         <div class="card-footer" style="padding: 0.75rem;">
             <span style="font-size: 14px;">
@@ -92,6 +98,7 @@
     {% endfor %}
 </div>
 </div>
+{% endifnotequal %}
 {% endblock %}
 {% block script %}
 <script>

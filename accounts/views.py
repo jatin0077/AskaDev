@@ -18,12 +18,12 @@ class TopDevelopers(ListView):
 
 	def get_context_data(self,*args, **kwargs):
 		context = super(TopDevelopers, self).get_context_data()
-		context['asked_q'] = Question.objects.filter(user=User.objects.get(username=self.request.user)).count()
+		context['asked_questions'] = Question.objects.filter(user=User.objects.get(username=self.request.user)).count()
 		return context
 
 	def get_queryset(self, *args, **kwargs):
-		qs = UserProfile.objects.all().order_by('-points').exclude(points=0)
-		return qs
+		queryset = UserProfile.objects.all().order_by('-points').exclude(points=0)
+		return queryset
 
 @csrf_exempt
 def followUser(request, user):
@@ -80,9 +80,9 @@ def get_image_from_data_url( data_url, resize=True, base_width=600 ):
     if resize:
         image = Image.open(file)
         image_io = io.BytesIO()
-        w_percent    = (base_width/float(image.size[0]))
-        h_size       = int((float(image.size[1])*float(w_percent)))
-        image        = image.resize((base_width,h_size), Image.ANTIALIAS)
+        w_percent = (base_width/float(image.size[0]))
+        h_size = int((float(image.size[1])*float(w_percent)))
+        image = image.resize((base_width,h_size), Image.ANTIALIAS)
         image.save(image_io, format=_extension)
         file = ContentFile( image_io.getvalue(), name=f"{_filename}.{_extension}" )
     return file, ( _filename, _extension )
@@ -101,7 +101,7 @@ class HomePage(TemplateView):
 			check_last_login = last_login - date_joined
 			if check_last_login < datetime.timedelta(seconds=10):
 				context['first_login'] = True
-		return context
+			return context
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
