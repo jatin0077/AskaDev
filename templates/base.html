@@ -210,6 +210,27 @@
 	const base_app = new Vue({
 		delimiters: ['[[', ']]'],
 		el: '#app',
+		data: {
+			percent: 0
+		},
+		mounted(){
+			const loading_ = this.$vs.loading({
+				type: 'corners',
+				color: '#fff',
+				text: 'Loading...',
+				background: '#000000',
+				percent: this.percent
+			})
+			setInterval(() => {
+				if(this.percent<=100){
+					loading_.changePercent(this.percent);
+					this.percent++
+				}
+			},30)
+			setTimeout(()=>{
+				loading_.close()
+			}, 4100)
+		}
 	})
 const loading = base_app.$vs.loading({
 					type: 'scale',
@@ -218,6 +239,9 @@ const loading = base_app.$vs.loading({
 document.onreadystatechange = () => {
 	if(document.readyState == 'complete'){
 		loading.close()
+	}
+	else{
+		
 	}
 }
 	window.onload = function(){
