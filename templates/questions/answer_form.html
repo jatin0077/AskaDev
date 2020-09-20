@@ -7,3 +7,13 @@
     <input type="submit" class="btn btn-primary" value="Answer">
 </form>
 {% endblock %}
+{% block script %}
+<script>
+     const md = new SimpleMDE({
+        element: document.querySelector('#id_answer'),
+    })
+    document.querySelector('#id_answer').required = "";
+    document.querySelector(".CodeMirror").style.textAlign = "left";
+    document.querySelector(".editor-preview-side").style.textAlign = "left";
+</script>
+{% endblock %}

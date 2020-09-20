@@ -22,7 +22,7 @@ class TopDevelopers(ListView):
 		return context
 
 	def get_queryset(self, *args, **kwargs):
-		queryset = UserProfile.objects.all().order_by('-points').exclude(points=0)
+		queryset = UserProfile.objects.all().order_by('-points').exclude(points__lte=10)
 		return queryset
 
 @csrf_exempt
@@ -185,7 +185,7 @@ class UserProfileUpdateView(UpdateView):
 				bio="",
 				website=None,
 				experience=1,	
-				profile_picture=f'static/images/profile_picture/default.jpg'			
+				profile_picture=f'static/images/profile_picture/default.png'			
 			)
 			up.save()
 			up.languages.add(ProgrammingLanguage.objects.get(language='C'))
