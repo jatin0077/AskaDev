@@ -11,6 +11,9 @@
 		position: relative;
 		margin-left: 20px;
 	}
+	.highlight{
+		font-weight: 400;
+	}
 </style>
 <div id="app_detail">
 <div class="container">
@@ -71,13 +74,16 @@
     </div>
     </div>
 </div>
+{% ifnotequal question.url "50397e64a39023ad47ac34c61ae192f0" %}
 <div class="container">
-    <br/>
+	<br/>
     <h3>Answers</h3>
     {% for a in answers %}  
     <div class="card">
-        <div class="card-body" style="padding: 0.75rem;">
-            <p>{{a.answer|safe|linebreaks}}</p>
+		<div class="card-body" style="padding: 0.75rem;">
+			<div class="markdown-body">
+				{{a.answer|safe|linebreaks}}
+			</div>
         </div>
         <div class="card-footer" style="padding: 0.75rem;">
             <span style="font-size: 14px;">
@@ -92,6 +98,7 @@
     {% endfor %}
 </div>
 </div>
+{% endifnotequal %}
 {% endblock %}
 {% block script %}
 <script>
@@ -122,9 +129,15 @@
 							color: 'dark',
 							icon: '<img draggable="false" class="emoji" alt="💔" src="https://github.githubassets.com/images/icons/emoji/unicode/1f494.png" style="width: 1em; margin-left: 3px;">',
 							title: 'Disliked Question {{question.title}}',
-							text: `<img src="{{user_profile}}" 
-							width="30px" style="border-radius: 12px;border: 1.8px solid #fff">
-							&nbsp;Developer - {{question.user}} lost a point 💔`
+							text: `<div style="display:flex">
+							<div class="vs-avatar-content 
+							vs-change-color
+							vs-change-color-badge" style="--vs-color:25,91,255;width:28px;height:28px">
+							<div class="vs-avatar">
+							<img src="{{user_profile}}" alt="">
+							</div>
+							</div>
+							<span class="ml-1" style="margin-top: 5px">Developer - {{question.user}} lost a point 💔</span>`
 						})
 					}else{
 						let like_btn = document.querySelector(".bx-heart");
@@ -135,12 +148,19 @@
 						const noti = this.$vs.notification({
 							progress: 'auto',
             				sticky: true,
+							color: 'dark',
 							icon: `<img draggable="false" class="emoji" alt="🥳" src="https://github.githubassets.com/images/icons/emoji/unicode/1f973.png" style="width: 1em; margin-left: 3px;">`,
-							border: 'dark',
 							title: 'Liked Question {{question.title}}',
-							text: `<img src="{{user_profile}}" 
-							width="30px" style="border-radius: 12px">
-							&nbsp;Developer - {{question.user}} got +1 point 🎉`
+							text: `
+							<div style="display:flex">
+							<div class="vs-avatar-content 
+							vs-change-color
+							vs-change-color-badge" style="--vs-color:25,91,255;width:28px;height:28px">
+							<div class="vs-avatar">
+							<img src="{{user_profile}}" alt="">
+							</div>
+							</div>
+							<span class="ml-1" style="margin-top: 5px">Developer - {{question.user}} got +1 point 🎉</span></div>`
 						})
 					}
 				document.querySelector('#addLike').disabled = false;

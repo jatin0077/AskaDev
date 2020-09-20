@@ -12,7 +12,6 @@
 ### To Do:writing_hand:
 - Add Likes / Dislikes feature on Answers(AJAX and Django Views)
 - A proper implementation of Top Developers View.(Current A Developer who answers the most is trending😅)
-- Integrate a WYSIWYG Editor for Question and Answers
 
 ### Technologies Used	:computer:
 - HTML
@@ -21,6 +20,8 @@
 - Django(Python)
 - [Twemoji](https://twemoji.twitter.com/) For Emoji Rendering
 - Converting Images to Base64 URL.
+- SimpleMDE & GitHub md API
+- Vuesax and VueJS for FrontEnd
 
 ### Got Any Ideas :computer:
 - DM me on Instagram [instagram](https://instagram.com/djangostaan) :left_speech_bubble:

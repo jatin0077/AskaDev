@@ -9,7 +9,8 @@ from .models import UserProfile,ProgrammingLanguage
 from questions.models import Question
 from PIL import Image, ImageOps
 from django.core.files.base import ContentFile
-import base64, secrets, io, os
+import base64, secrets, io, os, datetime
+
 class TopDevelopers(ListView):
 	model = UserProfile
 	template_name = 'accounts/top_developers.html'
@@ -17,12 +18,12 @@ class TopDevelopers(ListView):
 
 	def get_context_data(self,*args, **kwargs):
 		context = super(TopDevelopers, self).get_context_data()
-		context['asked_q'] = Question.objects.filter(user=User.objects.get(username=self.request.user)).count()
+		context['asked_questions'] = Question.objects.filter(user=User.objects.get(username=self.request.user)).count()
 		return context
 
 	def get_queryset(self, *args, **kwargs):
-		qs = UserProfile.objects.all().order_by('-points').exclude(points=0)
-		return qs
+		queryset = UserProfile.objects.all().order_by('-points').exclude(points__lte=10)
+		return queryset
 
 @csrf_exempt
 def followUser(request, user):
@@ -79,9 +80,9 @@ def get_image_from_data_url( data_url, resize=True, base_width=600 ):
     if resize:
         image = Image.open(file)
         image_io = io.BytesIO()
-        w_percent    = (base_width/float(image.size[0]))
-        h_size       = int((float(image.size[1])*float(w_percent)))
-        image        = image.resize((base_width,h_size), Image.ANTIALIAS)
+        w_percent = (base_width/float(image.size[0]))
+        h_size = int((float(image.size[1])*float(w_percent)))
+        image = image.resize((base_width,h_size), Image.ANTIALIAS)
         image.save(image_io, format=_extension)
         file = ContentFile( image_io.getvalue(), name=f"{_filename}.{_extension}" )
     return file, ( _filename, _extension )
@@ -95,7 +96,12 @@ class HomePage(TemplateView):
 			user = User.objects.get(username=self.request.user.username)
 			qs = Question.objects.filter(user=user).order_by('-asked_on')
 			context['q_list'] = qs
-		return context
+			last_login = user.last_login
+			date_joined = user.date_joined
+			check_last_login = last_login - date_joined
+			if check_last_login < datetime.timedelta(seconds=10):
+				context['first_login'] = True
+			return context
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -179,7 +185,7 @@ class UserProfileUpdateView(UpdateView):
 				bio="",
 				website=None,
 				experience=1,	
-				profile_picture=f'static/images/profile_picture/default.jpg'			
+				profile_picture=f'static/images/profile_picture/default.png'			
 			)
 			up.save()
 			up.languages.add(ProgrammingLanguage.objects.get(language='C'))

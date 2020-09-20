@@ -22,5 +22,11 @@
     var app_question_create = new Vue({
         el: '#app_question_create'
     })
+    const md = new SimpleMDE({
+        element: document.querySelector('#id_question'),
+    })
+    document.querySelector('#id_question').required = "";
+    document.querySelector(".CodeMirror").style.textAlign = "left";
+    document.querySelector(".editor-preview-side").style.textAlign = "left";
 </script>
 {% endblock %}

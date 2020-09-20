@@ -61,13 +61,12 @@
 <div id="app_profile">
 <div class="container">
 		<h4 id="profile_picture" style="
-		display: inline-block;">
-			<img  style="width: 50px;height: 50px;border-radius: 16px;" 
-			src="{{profile.profile_picture.url}}" 
-			class="img-fluid propicture">
-			<div class="active-pp"></div>
-			<span class="ml-1">{{ profile.user }}</span></h4>
-		<span class="float-right" style="margin-top: 10px;">
+		display: flex">
+			<vs-avatar badge badge-position="top-right" badge-color="#11e743" size="large" color="primary">
+				<img src="{{profile.profile_picture.url}}" alt="">
+			</vs-avatar>
+			<span class="ml-2 mt-2">{{ profile.user }}</span></h4>
+		<span class="float-right" style="margin-top: -48px;">
 			{% if sameUser %}
 				<vs-button 
 				href="{% url 'edit_profile' pk=user.id %}"
@@ -144,6 +143,7 @@
 		</vs-button>
 		</div>
 	  </div>
+	  <p></p>
 		{% empty %}
 			<h4>No Questions Asked</h4>
 		{% endfor %}

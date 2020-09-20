@@ -10,7 +10,7 @@
 		  <hr class="my-4">
 		  <p class="lead">
 			  <span style="position: absolute;">By</span>
-			  <vs-button 
+			  <vs-button
 			  href="/{{i.user}}"
 			  :style="{marginTop: '0px',marginLeft: '25px',fontSize: '18px',display: 'inline-block'}" transparent size="mini">
 				<i class="bx bx-user"></i>&nbsp;{{i.user}}
@@ -22,6 +22,7 @@
 		</vs-button>
 		</div>
 	  </div>
+	  <p></p>
 	{% empty %}
 	<h4>No Question Askeds</h4>
 	<vs-button danger filled size="large" href="/questions/create">
@@ -35,7 +36,7 @@
 <h2>AskaDeveloper 👨‍💻</h2>
 <h3>Get your questions🤔 answered by Developers</h3>
 <hr>
-<h4 id="why_askadev"><a 
+<h4 id="why_askadev"><a
 	style="text-decoration: none;"
 	href="#why_askadev">#</a>  Why AskaDev?</h4>
 <ul>
@@ -45,7 +46,7 @@
 </ul>
 <hr>
 <h4 id="under_dev">
-	<a style="text-decoration: none;" href="#under_dev">#</a> 
+	<a style="text-decoration: none;" href="#under_dev">#</a>
 	It's Still Under Developement</h4>
 <ul>
 	<li>Got a bug? DM me on instagram.🗨️</li>
@@ -81,13 +82,28 @@
 		<vs-row vs-w="12">
 			<vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="6" vs-sm="12" vs-xs="12" >
 				<vs-button size="large" block danger filled href="/login/">
-					<i class="bx bxs-log-in"></i>&nbsp;Login
+					Login
+					<template #animate>
+                        <i class="bx bxs-log-in"></i>
+                    </template>
 				</vs-button>
 			</vs-col>
 			<vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="6" vs-sm="12" vs-xs="12">
 				<vs-button danger transparent href="/register/" block size="large">
-					<i class='bx bx-user-plus'></i>&nbsp;Register	
-				</vs-button>	
+					Register
+					<template #animate>
+                        <i class="bx bxs-user-plus"></i>
+                    </template>
+				</vs-button>
+			</vs-col>
+			<vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="6" vs-sm="12" vs-xs="12">
+				<h5 class="text-center"><span>Help Us Improve this Website</span></h5>
+				<vs-button gradient warn href="https://github.com/Dev-Mehta/AskaDev/issues/new?title=[Bug]%20-%20Bug%20Title&body=**Steps%20to%20Reproduce**%0A1.%20Do%20something%0A2.%20Do%20something%20else.%0A3.%20Do%20one%20last%20thing.%0A%0A**Expected**%0AThe%20app%20should%20do%20this%0A%0A**Result**%0AThe%20Bapp%20does%20not%20do%20this%0A%0A**Testcase**%0A(fork%20this%20to%20get%20started)%0Ahttp://jsfiddle.net/exmple-bug/1/&assignee=Dev-Mehta&labels=bug" blank block size="large">
+					Report a Bug
+					<template #animate>
+					    <i class='bx bxs-bug'></i>
+                    </template>
+				</vs-button>
 			</vs-col>
 		  </vs-row>
 	</div>
@@ -97,8 +113,54 @@
 {% endif %}
 {% endblock body %}
 {% block script %}
+{% if first_login %}
 <script>
-const app_home = new Vue({
+	const app_home = new Vue({
+	el: '#app-home',
+	data: {
+		width: '100px',
+	},
+	delimitors: ['[[', ']]'],
+	mounted(){
+		const noti = this.$vs.notification({
+			sticky: true,
+			width: 'auto',
+			duration: 'none',
+			position: 'bottom-center',
+			color: '#7d33ff',
+			icon: `<img 
+						draggable="false"
+						style="width: 1.4rem"
+						alt="👋"
+						src="https://github.githubassets.com/images/icons/emoji/unicode/1f44b.png">`,
+			title: `<p style="font-size:16px;">
+					Welcome to AskaDeveloper</p>
+					<hr style="border-top: 1px solid #fff">`,
+			text: `
+			<p style="font-size: 14px;">
+					Here you can get answers of your questions.<br/><br/>
+					From the top navbar select Ask a Question Button to ask a question.
+					You can view trending questions from trending questions page.<br/><br/>
+					We  are constantly working to improve this website. You can find more
+					about this project on our github repository<br/><br/>
+					<a href="https://github.com/Dev-Mehta/AskaDev" 
+						target="_blank"
+						style="color: #fff; text-decoration: none;">
+						<i class='bx bxl-github'></i>
+					</a>
+					<a href="https://instagram.com/djangostaan" 
+						target="_blank"
+						style="color: #fff; text-decoration: none;">
+						<i class='bx bxl-instagram'></i>
+					</a>
+			</p>`
+		  })
+	}
+});
+</script>
+{% else %}
+<script>
+	const app_home = new Vue({
 	el: '#app-home',
 	data: {
 		width: '100px',
@@ -106,4 +168,6 @@ const app_home = new Vue({
 	delimitors: ['[[', ']]'],
 });
 </script>
+{% endif %}
+
 {% endblock %}

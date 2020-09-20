@@ -125,6 +125,7 @@ class AnswerCreateView(CreateView):
 
 	def form_valid(self, form):
 		answer = form.cleaned_data.get('answer')
+		answer = str(gitHubPost(answer).decode("utf-8"))
 		user=User.objects.get(username=self.request.user.username)
 		user_profile = UserProfile.objects.get(user=user)
 		question = get_object_or_404(Question,url=self.kwargs['question'])
