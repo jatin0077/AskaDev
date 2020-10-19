@@ -6,7 +6,11 @@ from accounts.models import UserProfile, ProgrammingLanguage
 from questions.models import Question
 from django.conf import settings
 import json
+from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.views.generic import View
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.urls import URLPattern, URLResolver
 
@@ -66,3 +70,21 @@ class QuestionDetailView(APIView):
 			return Response(serializer.data)
 		else:
 			return Response({"error":"Question not found"})
+
+
+class CanLogin(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+	 return super(CanLogin, self).dispatch(request, *args, **kwargs)
+
+	def post(self, request):
+		data = {"canLogin": "False"}
+		username = request.POST.get('username') or None
+		password = request.POST.get('password') or None
+
+		u = User.objects.filter(username=username)
+		if u.exists():
+			u = u[0]
+			if u.check_password(password):
+				data['canLogin'] = 'True'
+		return JsonResponse(data)
