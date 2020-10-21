@@ -185,7 +185,7 @@ class UserProfileUpdateView(UpdateView):
 				bio="",
 				website=None,
 				experience=1,	
-				profile_picture=f'static/images/profile_picture/default.png'			
+				profile_picture=f'static/images/profile_picture/default.jpg'			
 			)
 			up.save()
 			up.languages.add(ProgrammingLanguage.objects.get(language='C'))

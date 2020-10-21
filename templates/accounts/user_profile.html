@@ -69,7 +69,7 @@
 		<span class="float-right" style="margin-top: -48px;">
 			{% if sameUser %}
 				<vs-button 
-				href="{% url 'edit_profile' uid='436ea9b4-cc40-4c41-94bb-50c2f1e71d50' %}"
+				href="/{{profile.user.id}}/edit-profile"
 				color="danger"
 				v-bind:style="{fontSize: '14px', border: 'none', fontWeight: '700',outline: 'none'}"
 				size="small"

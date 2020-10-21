@@ -17,6 +17,7 @@ class ProgrammingLanguage(models.Model):
 
 class UserProfile(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	username = models.CharField(max_length=256)
 	bio = models.TextField(max_length=200, help_text='A Short Bio about yourself')
 	website = models.URLField(blank=True, null=True)
 	profile_picture = models.ImageField(upload_to='static/images/profile_picture', max_length=255, blank=True, default='')
@@ -30,6 +31,8 @@ class UserProfile(models.Model):
 		return str(self.user)
 	
 	def save(self, *args, **kwargs):
-		new_image = compress(self.profile_picture)
-		self.profile_picture = new_image
+		tmpUser = User.objects.get(id=self.user.id)
+		self.username = tmpUser.username
+		# new_image = compress(self.profile_picture)
+		# self.profile_picture = new_image
 		super().save(*args, **kwargs)
