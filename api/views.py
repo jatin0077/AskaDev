@@ -88,3 +88,37 @@ class CanLogin(View):
 			if u.check_password(password):
 				data['canLogin'] = 'True'
 		return JsonResponse(data)
+
+
+class GetUserProfile(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+		return super(GetUserProfile, self).dispatch(request, *args, **kwargs)
+
+	def post(self, request):
+		pk = request.POST.get('pk')
+		user_profile = UserProfile.objects.filter(id=pk)
+		if user_profile.exists():
+			user_profile = user_profile[0]
+			data = UserProfileSerializer(user_profile, many=False)
+			data = data.data
+		else:
+			data = {"error":"User does not exist"}
+		return JsonResponse(data)
+
+
+class GetLanguage(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+		return super(GetLanguage, self).dispatch(request, *args, **kwargs)
+
+	def post(self, request):
+		pk = request.POST.get('pk')
+		language = ProgrammingLanguage.objects.filter(id=pk)
+		if language.exists():
+			language = language[0]
+			data = ProgrammingLanguageSerializer(language, many=False)
+			data = data.data
+		else:
+			data = {"error":"User does not exist"}
+		return JsonResponse(data)

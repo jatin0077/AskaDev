@@ -7,5 +7,7 @@ urlpatterns = [
 	path('trending/questions/', views.TrendingQuestionListView.as_view()),
 	path('trending/developers', views.TrendingDeveloperListView.as_view()),
 	path('question/<str:url>/', views.QuestionDetailView.as_view()),
-	path('can-login/', views.CanLogin.as_view())
+	path('can-login/', views.CanLogin.as_view()),
+	path('get-profile/', views.GetUserProfile.as_view()),
+	path('get-language/', views.GetLanguage.as_view()),
 ]
