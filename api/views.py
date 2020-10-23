@@ -7,7 +7,7 @@ from questions.models import Question
 from django.conf import settings
 import json
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -96,15 +96,16 @@ class GetUserProfile(View):
 		return super(GetUserProfile, self).dispatch(request, *args, **kwargs)
 
 	def post(self, request):
-		pk = request.POST.get('pk')
-		user_profile = UserProfile.objects.filter(id=pk)
-		if user_profile.exists():
-			user_profile = user_profile[0]
-			data = UserProfileSerializer(user_profile, many=False)
-			data = data.data
-		else:
-			data = {"error":"User does not exist"}
-		return JsonResponse(data)
+	    received_json_data = json.loads(request.body.decode('utf-8'))
+	    pk = received_json_data["pk"]
+	    user_profile = UserProfile.objects.filter(id=pk)
+	    if user_profile.exists():
+	        user_profile = user_profile[0]
+	        data = UserProfileSerializer(user_profile, many=False)
+	        data = data.data
+	    else:
+	       data = {"error":"User does not exist"}
+	    return JsonResponse(data)
 
 
 class GetLanguage(View):
@@ -113,12 +114,13 @@ class GetLanguage(View):
 		return super(GetLanguage, self).dispatch(request, *args, **kwargs)
 
 	def post(self, request):
-		pk = request.POST.get('pk')
-		language = ProgrammingLanguage.objects.filter(id=pk)
-		if language.exists():
-			language = language[0]
-			data = ProgrammingLanguageSerializer(language, many=False)
-			data = data.data
-		else:
-			data = {"error":"User does not exist"}
-		return JsonResponse(data)
+	    received_json_data = json.loads(request.body)
+	    pk = received_json_data["pk"]
+	    language = ProgrammingLanguage.objects.filter(id=pk)
+	    if language.exists():
+	        language = language[0]
+	        data = ProgrammingLanguageSerializer(language, many=False)
+	        data = data.data
+	    else:
+	        data = {"error":"User does not exist"}
+	    return JsonResponse(data)
