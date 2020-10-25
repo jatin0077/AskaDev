@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.urls import URLPattern, URLResolver
-
+from rest_framework.decorators import api_view
 class UserProfileListView(APIView):
 	def get(self, request):
 		qs = UserProfile.objects.all().order_by('-points')
@@ -124,3 +124,56 @@ class GetLanguage(View):
 	    else:
 	        data = {"error":"User does not exist"}
 	    return JsonResponse(data)
+
+class RegisterUser(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+		return super(RegisterUser, self).dispatch(request, *args, **kwargs)
+
+	def post(self, request):
+		data = json.loads(request.body) or None
+		username = data['username'] or None
+		password = data['password'] or None
+		data = {}
+		if username is not None and password is not None:
+			filter_user = User.objects.filter(username=username)
+			if filter_user.exists():
+				data['status'] = "Invalid"
+				data['error'] = 'User Already Exists'
+				return JsonResponse(data)
+			if len(password) >= 8:
+				user = User.objects.create_user(username=username, password=password)
+				data['status'] = 'Created'
+				data['error'] = 'None'
+			else:
+				data['status'] = 'Invalid'
+				data['error'] = 'Invalid Credentials'
+		else:
+			data['status'] = 'Invalid'
+			data['error'] = 'No Credentials'
+		return JsonResponse(data)
+
+
+class GetQuestionsByUser(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+	 return super().dispatch(request, *args, **kwargs)
+
+	def post(self, request):
+		body = request.body or None
+		if body == None:
+			return JsonResponse({})
+		r_body = json.loads(body) or None
+		if r_body == None:
+			return JsonResponse({})
+		username = r_body['username'] or None
+		if username != None:
+			user = User.objects.filter(username=username)
+			if user.exists():
+				questions = Question.objects.filter()
+				serializer = QuestionSerializer(questions, many=True)
+				return JsonResponse(serializer.data, safe=False)
+			else:
+				return JsonResponse({"error":"User does not exists"})
+		else:
+			return JsonResponse({})

@@ -10,4 +10,6 @@ urlpatterns = [
 	path('can-login/', views.CanLogin.as_view()),
 	path('get-profile/', views.GetUserProfile.as_view()),
 	path('get-language/', views.GetLanguage.as_view()),
+	path('register/', views.RegisterUser.as_view()),
+	path('get-questions/', views.GetQuestionsByUser.as_view()),
 ]
