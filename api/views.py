@@ -14,6 +14,8 @@ from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.urls import URLPattern, URLResolver
 from rest_framework.decorators import api_view
+from bs4 import BeautifulSoup
+
 class UserProfileListView(APIView):
 	def get(self, request):
 		qs = UserProfile.objects.all().order_by('-points')
@@ -30,7 +32,13 @@ class TrendingQuestionListView(APIView):
 	def get(self, request):
 		qs = Question.objects.all().order_by('-likes')[:30]
 		serializer = QuestionSerializer(qs, many=True)
-		return Response(serializer.data)
+		data = serializer.data
+		question_code = ''
+		for i in range(len(data)):
+			print(i)
+			question_code = repr(BeautifulSoup(data[i]['question'], features='html.parser').text)
+			data[i]['question'] = question_code
+		return Response(data)
 
 class TrendingDeveloperListView(APIView):
 	def get(self, request):
@@ -66,8 +74,12 @@ class QuestionDetailView(APIView):
 	def get(self, request, *args, **kwargs):
 		q = Question.objects.filter(url=kwargs['url'])
 		if q.exists():
+			qw = Question.objects.get(url=kwargs['url'])
 			serializer = QuestionSerializer(q, many=True)
-			return Response(serializer.data)
+			data = serializer.data
+			question_code = repr(BeautifulSoup(data[0]['question'], features='html.parser').text)
+			data[0]['question'] = question_code
+			return Response(data)
 		else:
 			return Response({"error":"Question not found"})
 
