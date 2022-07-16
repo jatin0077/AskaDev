@@ -6,10 +6,10 @@
 * Open a new GitHub pull request with the patch.
 * Ensure the PR description clearly describes the problem and solution. Include the relevant issue number if applicable.
 ### Do you intend to add a new feature or change an existing one?
-* Suggest your change with [Email](mailto:devbmehta04@gmail.com) or [Instagram Direct Message](https://instagram.com/djangostaan/) and start writing code.
+* Suggest your change with [Email](mailto:devbmehta04@gmail.com) and start writing code.
 * Do not open an issue on GitHub until you have collected positive feedback about the change. GitHub issues are primarily intended for bug reports and fixes.
 ### Do you have questions about the source code?
-* Ask any question about how to use AskaDeveloper by [Email](mailto:devbmehta04@gmail.com) or [Instagram Direct Message](https://instagram.com/djangostaan/).
+* Ask any question about how to use AskaDeveloper by [Email](mailto:devbmehta04@gmail.com).
 
 ##### Thanks! ❤️ ❤️ ❤️
 ##### AskaDeveloper Team

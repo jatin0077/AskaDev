@@ -184,6 +184,11 @@ class GetQuestionsByUser(View):
 			if user.exists():
 				questions = Question.objects.filter()
 				serializer = QuestionSerializer(questions, many=True)
+				data = serializer.data
+				for i in range(len(data)):
+					print(i)
+					question_code = repr(BeautifulSoup(data[i]['question'], features='html.parser').text)
+					data[i]['question'] = question_code
 				return JsonResponse(serializer.data, safe=False)
 			else:
 				return JsonResponse({"error":"User does not exists"})

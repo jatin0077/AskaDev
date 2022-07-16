@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 	'smartfields',
 	'rest_framework',
+    'markdown_deux',
 	'api'
 ]
 

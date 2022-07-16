@@ -112,6 +112,20 @@ def register(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             u = User.objects.get(username=username)
+            up = UserProfile(
+				user=user,
+				bio="",
+				website=None,
+				experience=1,	
+				profile_picture=f'static/images/profile_picture/default.jpg'			
+			)
+            up.save()
+            up.languages.add(ProgrammingLanguage.objects.get(language='C'))
+            up.follows.add(UserProfile.objects.get(user=User.objects.get(username='AskaDev')))
+            admin = UserProfile.objects.get(user=User.objects.get(username='AskaDev'))
+            up.save()
+            admin.followers.add(up)
+            admin.save()
             return redirect(f'/{u.id}/edit-profile')
     else:
         form = UserCreationForm()
@@ -131,7 +145,6 @@ class UserProfileView(View):
 			user = UserProfile.objects.get(user=User.objects.get(username=uname))
 			rusr = get_object_or_404(User, username=request.user.username)
 			ruser = get_object_or_404(UserProfile, user=rusr)
-			ruser = UserProfile.objects.get(user=User.objects.get(username=request.user))
 			u = u[0]
 			if user == ruser:
 				sameUser = True
@@ -170,32 +183,16 @@ class UserProfileUpdateView(UpdateView):
 			 'website'
 	]
 	def get(self,request, *args, **kwargs):
-		try:
-			user = User.objects.get(username=self.request.user)
-			user_profile = UserProfile.objects.get(user=user)
-			requested_user = UserProfile.objects.get(id=self.kwargs['pk'])
-			if not user_profile==requested_user:
+		user = User.objects.get(username=self.request.user)
+		requested_user = UserProfile.objects.filter(id=self.kwargs['pk'])
+		if requested_user.exists():
+			if not user==requested_user[0].user:
 				return redirect('/')
 			else:
 				return super(UserProfileUpdateView, self).get(request,*args,**kwargs) 
-		except UserProfile.DoesNotExist:
-			user=User.objects.get(username=self.request.user)
-			up = UserProfile(
-				user=user,
-				bio="",
-				website=None,
-				experience=1,	
-				profile_picture=f'static/images/profile_picture/default.jpg'			
-			)
-			up.save()
-			up.languages.add(ProgrammingLanguage.objects.get(language='C'))
-			up.follows.add(UserProfile.objects.get(user=User.objects.get(username='AskaDev')))
-			admin = UserProfile.objects.get(user=User.objects.get(username='AskaDev'))
-			up.save()
-			admin.followers.add(up)
-			admin.save()
-			uid=self.kwargs['pk']
-			return redirect(f'/{uid}/edit-profile/')
+		else:
+			return HttpResponse("Requested Profile Doesn't Exist")
+		
 
 	def form_valid(self, form):
 		redirect_url = super(UserProfileUpdateView, self).form_valid(form)
