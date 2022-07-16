@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 	'rest_framework',
     'markdown_deux',
 	'api',
-	'whitenoise,
+	'whitenoise',
 ]
 
 MIDDLEWARE = [
