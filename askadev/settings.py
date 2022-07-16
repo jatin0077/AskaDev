@@ -42,7 +42,8 @@ INSTALLED_APPS = [
 	'smartfields',
 	'rest_framework',
     'markdown_deux',
-	'api'
+	'api',
+	'whitenoise,
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -140,5 +142,5 @@ REST_FRAMEWORK = {
         'api.serializers.PrettyJSONRender',
     ]
 }
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
