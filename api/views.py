@@ -197,13 +197,15 @@ class GetQuestionsByUser(View):
 			return JsonResponse({})
 
 def get_update(request):
-	import os
-	repo = git.Repo(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-	origin = repo.remotes.origin
-	repo.create_head(
-		'master',
-		origin.refs.master
-	).set_tracking_branch(origin.refs.master).checkout()
-	origin.pull()
-	return HttpResponse("Updated")
-
+	if request.method == 'POST':
+		import os
+		repo = git.Repo(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+		origin = repo.remotes.origin
+		repo.create_head(
+			'master',
+			origin.refs.master
+		).set_tracking_branch(origin.refs.master).checkout()
+		origin.pull()
+		return HttpResponse("Updated")
+	else:
+		return HttpResponse("Invalid")
