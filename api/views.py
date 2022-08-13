@@ -6,6 +6,7 @@ from accounts.models import UserProfile, ProgrammingLanguage
 from questions.models import Question
 from django.conf import settings
 import json
+import git
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponse
 from django.views.generic import View
@@ -194,3 +195,15 @@ class GetQuestionsByUser(View):
 				return JsonResponse({"error":"User does not exists"})
 		else:
 			return JsonResponse({})
+
+def get_update(request):
+	import os
+	repo = git.Repo(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+	origin = repo.remotes.origin
+	repo.create_head(
+		'master',
+		origin.refs.master
+	).set_tracking_branch(origin.refs.master).checkout()
+	origin.pull()
+	return HttpResponse("Updated")
+
