@@ -195,7 +195,8 @@ class GetQuestionsByUser(View):
 				return JsonResponse({"error":"User does not exists"})
 		else:
 			return JsonResponse({})
-
+			
+@method_decorator(csrf_exempt)
 def get_update(request):
 	if request.method == 'POST':
 		import os
