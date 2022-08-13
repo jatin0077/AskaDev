@@ -170,7 +170,7 @@ class RegisterUser(View):
 class GetQuestionsByUser(View):
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request, *args, **kwargs):
-	 return super().dispatch(request, *args, **kwargs)
+		return super().dispatch(request, *args, **kwargs)
 
 	def post(self, request):
 		body = request.body or None
