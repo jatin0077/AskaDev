@@ -5,7 +5,7 @@ If you want to create links.txt on your own then you can use this notebook
 templates/linksgenration.ipynb
 """
 # import beautifulsoup4
-import requests
+import requests #importing request module 
 from bs4 import BeautifulSoup
 import json
 #now read file links.txt and get soup from each link
